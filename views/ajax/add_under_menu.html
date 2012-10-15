@@ -1,0 +1,4 @@
+{% extends "ajax/forms.html"%}
+{% block url %}{% url add_under_menu %}?id={{id}}{% endblock%}
+{% block mesaj %} Adaugi submeniu la meniul <span style="color:red; font-size:17px;"> {{menu.menu}} </span> {% endblock %}
+{% block value %} Adauga submeniu {% endblock %}

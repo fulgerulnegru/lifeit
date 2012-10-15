@@ -1,0 +1,70 @@
+{% extends "article.html" %}
+
+{% block title %}
+  {{ menu2.page.title }} | Lifeit
+{% endblock %}
+
+{% block panel_article_c %}
+{% if menu2.page %}
+  <div style="margin-left:50px;width:600px;">
+    {{menu2.page.body|safe}}
+<div style="float:left; margin:-4px 0 -6px 3px;">
+    
+    <div style="float:left;">
+      <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://lifeit.ro" send="false" layout="button_count" width="40" show_faces="true" font="arial" fb-xfbml-state="rendered" class="fb_edge_widget_with_comment fb_iframe_widget"><span style="height: 21px; width: 73px;"><iframe id="f549755e" name="f3648bdb6c" scrolling="no" style="border: none; overflow: hidden; height: 21px; width: 73px;" title="Like this content on Facebook." class="fb_ltr" src="http://www.facebook.com/plugins/like.php?channel_url=http%3A%2F%2Fstatic.ak.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D11%23cb%3Dfe014c608%26origin%3Dhttp%253A%252F%252Fanimekage.com%252Ff8f0ee424%26domain%3Danimekage.com%26relation%3Dparent.parent&amp;colorscheme=light&amp;extended_social_context=false&amp;font=arial&amp;href=http%3A%2F%2Fwww.animekage.com%2Fwatch-online%2Fnaruto-shippuden-episode-283.html&amp;layout=button_count&amp;locale=en_US&amp;node_type=link&amp;sdk=joey&amp;send=false&amp;show_faces=false&amp;width=90"></iframe></span></fb:like>
+    </div>
+              
+    <div style="float:left; margin-left:9px;">
+      <!-- Place this tag in your head or just before your close body tag -->
+      <script type="text/javascript" src="https://apis.google.com/js/plusone.js" gapi_processed="true"></script>
+      <!-- Place this tag where you want the +1 button to render -->
+      <div style="height: 20px; width: 90px; display: inline-block; text-indent: 0px; margin: 0px; padding: 0px; background-color: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; background-position: initial initial; background-repeat: initial initial;" id="___plusone_1"><iframe allowtransparency="true" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 90px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" width="100%" id="I0_1349966556361" name="I0_1349966556361" src="https://plusone.google.com/_/+1/fastbutton?bsv=m&amp;abtk=AEIZW7TIlJDsXy6FZXfdjZVJPnURZm4TQgTmM9QMWczMIpqK1MzYxRg8ohyMaeUTK%2BQZuZV5nOG29GVOByaTg4LikZJmr5TYtdTPZl3Clr5%2BhJ9KABmbe70%3D&amp;size=medium&amp;hl=en-US&amp;origin=http%3A%2F%2Fanimekage.com&amp;url=http%3A%2F%2Fwww.animekage.com%2Fwatch-online%2Fnaruto-shippuden-episode-283.html&amp;ic=1&amp;jsh=m%3B%2F_%2Fapps-static%2F_%2Fjs%2Fgapi%2F__features__%2Frt%3Dj%2Fver%3DvV2Z2mA2ug8.ro.%2Fsv%3D1%2Fam%3D!r2-g0UY7u_OIMAn3TA%2Fd%3D1%2Frs%3DAItRSTNvEVV7zZK8szsOq3qTVYInKFKftQ#_methods=onPlusOne%2C_ready%2C_close%2C_open%2C_resizeMe%2C_renderstart%2Concircled&amp;id=I0_1349966556361&amp;parent=http%3A%2F%2Fanimekage.com" title="+1"></iframe></div>
+    </div>
+    
+</div>
+</br>
+    <div class="fb-comments" data-href="http://lifeit.ro" data-num-posts="2" data-width="600"></div>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1";
+          fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+  </div>
+  </div>
+{% else %}
+{% for i in menu2.articles.all %}
+{% if i.aprobat and i.data <= data %}
+  <p style="margin-left:30px">
+    <div class="row article">
+        <div class="span9" style="width:600px;">
+          <a href="{% url views.article%}?id={{i.id}}">
+            <span class="label label-info" style="font-size:30px">
+              {{i.title}}
+            </span>
+          </a>
+          </br>
+          </br>
+          <div class="row">
+            <div class="span3" style="width:90px;"><img src="/static/{{i.image}}"></img></div>
+            <div class="span6" >
+              {{i.describe}}
+              </br>
+              <span style="font-size:20px;">
+                <a href="{% url views.article%}?id={{i.id}}">
+                more<i class="icon-circle-arrow-right" style="position:relative;top:5px;"></i>
+                </a>
+              </span>
+            </div>
+          </div>
+    </div>
+  </div>
+  </p>
+  <hr>
+  </br>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endblock %}

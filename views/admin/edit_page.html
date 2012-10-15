@@ -1,0 +1,53 @@
+{% extends "admin/add_page.html" %}
+
+{% block javascritp4 %}$(there1).parent().parent().show(){% endblock %}
+{% block javascript3 %}
+  if(!cifra)
+  {
+
+  if("{{page.menu}}")
+    $('.menu').parent().filter('#{{page.menu.order}}').parent().show();
+  if("{{page.undermenu}}")
+    $('.info').parent().filter('#{{page.undermenu.order}}').parent().show();
+
+  }
+{% endblock %}
+
+{% block url %}{% url edit_page %}?id={{id}} {% endblock %}
+{% block submit %} Edit Page {% endblock %}
+
+{% block menu %}
+    {% if not i.undermenu1 %}
+    {% if not i.menu.page %}
+    {% block hide %}{% endblock %}
+    <tr>
+     <td id="{{i.menu.order}}"><p class="menu" style="background-color: #f9f9f9">{{i.menu.menu}}</p></td>
+     <td></td>
+    </tr>
+    {% else %}
+    <tr style="display:none;">
+     <td id="{{i.menu.order}}"><p class="menu" style="background-color: #f9f9f9">{{i.menu.menu}}</p></td>
+     <td></td>
+    </tr>
+    {% endif %}
+    {% else %}
+    <tr>
+     <td id="{{i.menu.order}}"><p class="menu" style="background-color: #f9f9f9">{{i.menu.menu}}</p></td>
+     <td></td>
+    </tr>
+    {% endif %}
+
+    {% for j in i.undermenu1 %}
+      {% if not j.page  %}
+      <tr >
+        <td style="opacity:0.0;"></td>
+        <td id="{{j.order}}"><p class="info" style="background-color: #d9edf7;">{{j.undermenu}}</p></td>
+      </tr>
+      {% else %}
+      <tr style="display: none;" >
+        <td style="opacity:0.0;"></td>
+        <td id="{{j.order}}"><p class="info" style="background-color: #d9edf7;">{{j.undermenu}}</p></td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+{% endblock %}

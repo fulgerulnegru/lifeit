@@ -1,0 +1,14 @@
+{% extends "ajax/forms.html" %}
+{% block submit %}
+  $('document').ready(function(){
+    $('.form').submit(function(){
+      $('.form').prepend('<img src="/static/images/loading.gif" style="position:absolute;top:-15px;left:30%"></img>');
+      $.post('{% url add_user %}',$(this).serialize(),function(data){
+        $('.form').html(data);
+      }); 
+      return false;    
+    });
+});
+{% endblock %}
+{% block value %}Adauga user{% endblock %} 
+

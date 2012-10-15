@@ -1,0 +1,13 @@
+{% extends "ajax/forms.html" %}
+
+{% block url %}{% url add_tags %}{% endblock %}
+
+{% block javascript2 %}
+            $.get('{% url refres_tags %}',function(data){
+              console.log(data);
+              console.log($('#tabel_tags'));
+              $('.tags_all').html(data);
+            });
+{% endblock %}
+
+{% block value %}Adauga Tags {% endblock %}

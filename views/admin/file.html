@@ -1,0 +1,83 @@
+{% extends "admin/admin.html" %}
+
+{% block javascript %}
+<script>
+$('document').ready(function(){
+  $('#id_file').change(function(e){
+    $('body').append('<img class="loading" src="/static/images/loading.gif" style="z-index:20;position:fixed;top:120px;left:40%"></img>');
+    console.log(e.target.files[0].size)
+    if(e.target.files[0].size>10*1024*1024){
+      $(this).val("");
+      $(this).parent().prepend('<ul class="errorlist"><li>Ai incarcat un fisier mai mare 10mb</li></ul>')
+      $('.loading').remove()
+    }
+    else{
+      $('form').submit();
+    }
+  });
+  $('#remove').live("click",function(){
+    if(confirm("Chiar vrei sa stergi fisierul  ?")){
+      remove = $(this).parent().parent();
+      $.get('{% url delete_file %}?id=' + remove.attr('id'));
+      remove.hide();
+    }
+  });
+  console.log("{{mesaj.name}}");
+});
+</script>
+{% endblock %}
+
+{% block panel %}
+<p> Limita fisierul este de 10mb </p>
+<p>
+  <form method="POST" enctype="multipart/form-data" action="." class="form-inline">
+    {% csrf_token %}
+    {{ form.as_p }}
+  </form>
+  </p>
+{% if file_paginator %}
+  (Page {{ page }} of {{ pages }})
+{% endif %}
+
+{% if file_paginator %}
+  <div class="pagination">
+    <ul>
+      {% if has_prev %}
+        <li><a href="{%block url2 %}{% url file %}{% endblock %}?page={{ prev_page}}">Prev</a></li>
+      {% endif %}
+      {% if has_next %}
+        <li><a href="{% block url3 %}{% url file %}{% endblock %}?page={{ next_page}}">Next</a></li>
+      {% endif %}
+    </ul>
+  </div>
+{% endif %}
+<p>
+<table class="table table-striped table-bordered table-condensed">
+  <thead>
+    <tr>
+    <th>Id</th>
+    <th>Nume</th>
+    <th>URL</th>
+    <th>User</th>
+    <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in file %}
+  <tr id="{{i.id}}">
+      <td>{{i.id}}</td>
+      <td>{{i.name}}</td>
+      <td><a href="/static/{{i.file}}">Aici se afla fisierul</a></td>
+      <td>
+        <a href="#">{{i.user}}</a>
+      </td>
+      <td id="{{i.id}}">
+        {% if i.user == user or user.is_staff %}
+          <button class="btn btn-success" id ="remove"><i class="icon-trash"></i></button></br></br>
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

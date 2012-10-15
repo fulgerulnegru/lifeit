@@ -1,0 +1,98 @@
+{% extends "admin/add_page.html" %}
+
+{% block url %} {% url add_articles %} {% endblock %}
+
+{% block stylesheet %}
+<link href="static/stylesheet/jquery-ui.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block javascript5 %}
+<script src="/static/javascript/jquery-ui-timepicker-addon.js"></script>
+<script>
+$('document').ready(function(){
+
+  cifra_t = $("#id_tags_v").val();
+
+  $('#add_tags').live("click",function(){
+        $.get('{% url add_tags %}',function(data){
+            $('body').append('<div><div class="well lightbox-box" style="position:fixed">'+ data +'</div><div class="lightbox" ></div></div>');
+        });
+    $('.lightbox').live("click",function(){
+      $(this).parent().remove();
+    });
+  });
+
+  $( "#id_tags" ).droppable({
+       drop: function(event, ui) {
+        there = event.toElement;
+        if($(there).hasClass("tags") && ($('#id_tags_v').val().search($(there).attr("id")) == -1 || $('#id_tags_v').val() == "") )
+          {
+          if($('#id_tags_v').val().search($(there).attr("id")) >= 0)
+          $('#id_tags_v').val().search($(there).attr("id"));
+          $(this).append('<p class="' + $(there).attr("class") + '" id="' + $(there).attr("id") + '">' + $(there).text() + '<i class="icon-remove"></i></p>');
+          this_global = $(this);
+
+          $( '#id_tags_v' ).attr("value", $('#id_tags_v').val() + " " + $(there).attr("id"));
+
+          $(".icon-remove").click(function(){
+            $(this).parent().remove();
+            $( '#id_tags_v' ).attr("value",$('#id_tags_v').val().replace($(this).parent().attr("id") ,''));
+          });
+         }
+       }
+  });
+
+  {% block icon %}
+  {% endblock %}
+  $(".icon-remove").click(function(){
+    if($(this).parent().hasClass("tags")){
+      $(this).parent().remove();
+      $( '#id_tags_v' ).attr("value",$('#id_tags_v').val().replace($(this).parent().attr("id") ,''));
+    }
+    else
+      {
+          $('.info').draggable({ disabled:false });
+          there1.show();
+          {% block javascritp4 %}{% endblock %}
+          for(i=0; i< $('.menu').length;i++)
+            if($('.menu').eq(i).parent().parent().parent().children().length == 1){
+            $('.menu').eq(i).draggable({disabled:false });
+          }
+
+          this_global = $('#id_menu');
+          $( '#id_menu_i' ).val("");
+          $(this_global).children().remove();
+      }
+  });
+    var pickerOpts = {
+        dateFormat:"yy-m-d",
+    };
+    $("#id_data").datepicker(pickerOpts);
+});
+</script>
+{% endblock %}
+
+{% block min-width %}300px{% endblock %}
+
+{% block submit %} Adauga articol {% endblock %}
+
+{% block enctype %} enctype="multipart/form-data"  {% endblock %}
+
+{% block tags_form %}
+   <p>
+   {{error_t|safe}}
+     <label for="id_tags">Tags:</label>
+     <div id="id_tags" style="border-style:dotted;width:100%;min-height:20px;">
+       {% for i in tags %}
+         <p class="tags label label-info" id="{{i.id}}"> {{i.name}}<i class="icon-remove"></i></p>
+       {% endfor %}
+     </div>
+   </p>
+   <p style="display:none"> <input id="id_tags_v" type="text" name="tags" maxlength="20" value="{{value_t}}"></p>
+{% endblock %}
+
+{% block tags %}
+<div class="tags_all" style="float:left; margin-left:50px;">
+  {{ refres_tags|safe }}
+</div>
+{% endblock %}

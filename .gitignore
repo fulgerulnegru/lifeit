@@ -1,0 +1,15 @@
+venv
+settings.py
+.settings.py.swp
+settings.py~
+*.pyc
+*~
+baza
+controllers/migrations
+static/corel_draw
+exit
+static/user
+static/article
+static/file
+*.swo
+*.swp

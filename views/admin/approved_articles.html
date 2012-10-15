@@ -1,0 +1,23 @@
+{% extends "admin/articles.html" %}
+
+{% block url1 %}
+  {% url approved_articles %}
+{% endblock %}
+
+{% block url2 %}
+  {% url approved_articles %}
+{% endblock %}
+
+{% block javascript3 %}
+    $('#blocked').live("click",function(){
+      blocked = $(this).parent().prev().prev();
+      $.get('{% url blocked_articles %}?id=' + blocked.parent().attr('id'));
+      location.reload();
+  });
+{% endblock %}
+
+{% block button %}
+  {% if user.is_staff %}
+  <button class="btn btn-info " id="blocked">{% if not i.aprobat %}Aproba{% else %}Blocheaza {% endif %}</button>
+  {% endif %}
+{% endblock %}

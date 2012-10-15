@@ -1,0 +1,48 @@
+{% extends "admin/admin.html"%}
+{% block javascript %}
+<script src="/static/javascript/lightbox.js"></script>
+<script>
+$('document').ready(function(){
+    $('#edit_profile').click(function(){
+        $.get('{% url edit_profile %}',function(data){
+            $('body').append('<div><div class="well lightbox-box">'+ data +'</div><div class="lightbox" ></div></div>');
+            $('.lightbox-box').append('    <div id="dropbox">      <input type="file" class="file1" value="Adauga fisier"  /> <div class="change"></div>  </div>');
+            $('body').append('<script src="/static/javascript/jquery.filedrop.js"></sc' + 'ript><script >var url="{% url upload_profile %}"; var maxfiles=1; var maxfilesize = 2; var height = 200; var width = 200; </sc' + 
+                    'ript><script src="/static/javascript/script.js"></' + 'script>');
+            remove_lightbox();
+            return false;
+        });
+        return false;
+    });
+});
+</script> 
+{% endblock %}
+{% block stylesheet %}
+<link rel="stylesheet" href="/static/stylesheet/style.css" type="text/css" media="screen" title="all" charset="utf-8" />
+{% endblock %}
+{% block panel %}
+<p> Nume de familie : {{user.first_name}}</p>
+<p> Prenume : {{user.last_name}}</p>
+<p> Email : {{user.email}}</p>
+<p> <table class="table ">
+  <tbody> 
+    <tr>
+      <td>Descriere: </td>
+      <td>{{user.profile.describe}}</td>
+    </tr>
+  <tbody>
+</table></p>
+{% if user.profile.image %}
+<p> <table class="table ">
+  <tbody> 
+    <tr>
+      <td>Imagine: </td>
+      <td><img src="/static/{{user.profile.image}}" title="{{user}}"></img></td>
+    </tr>
+  <tbody>
+</table></p>
+{%endif%}
+<button class="btn btn-danger" id="edit_profile" style="position:relative;left:40%;">Modifica</button>
+{% endblock %}
+{% block body %}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "ajax/forms.html" %}
+
+{% block login %}
+  $('.form').prepend('<img src="/static/images/loading.gif" style="position:absolute;top:-50px;left:80px;"></img>');
+{% endblock %}
+
+{% block url %}{% url email %}{% endblock %}
+
+{% block value %}Abonare{% endblock %}

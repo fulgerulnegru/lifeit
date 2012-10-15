@@ -1,0 +1,7 @@
+{% extends "ajax/forms.html" %}
+{% block url%}{% url edit_profile %}{% endblock %}
+
+{% block forms %}
+  {{form1.as_p}}
+  <button type="submit" class="btn">Modifica</button>
+{% endblock %}

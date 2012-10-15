@@ -1,0 +1,9 @@
+{% extends "admin/admin.html" %}
+{% block javascript2 %}
+  {% if not user.is_staff %}
+    <script>
+      window.location = "/admin/";
+    </script>
+  {% endif %}
+{% endblock %}
+

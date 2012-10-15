@@ -1,0 +1,46 @@
+<html>
+<head>
+<meta name="robots" content="nofollow" />
+<title>{%block title%} Lifeit {%endblock %}</title>
+<link rel="shortcut icon" href="/static/images/sigla.jpg" type="image/x-icon">
+<script type="text/javascript" src="/static/javascript/jquery-1.7.2.js">
+</script>
+<script type="text/javascript" src="/static/javascript/bootstrap.js">
+</script>
+{% block javascript %}{% endblock %}
+{% block javascript1 %}{% endblock %}
+<link rel="stylesheet" href="/static/stylesheet/bootstrap.css" type="text/css" media="screen" title="all" charset="utf-8" />
+<link rel="stylesheet" href="/static/stylesheet/base.css" type="text/css" media="screen" title="all" charset="utf-8" />
+{% block stylesheet%}{%endblock%}
+</head>
+<body style="background:url(/static/images/background.jpg);">
+  <div class="navbar" style="position:absolute;z-index:2;">
+    <div style="float:right;">
+      {% include "user.html" %}
+    </div>
+  </div>
+  <div class="navbar1">
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner" >
+        {% block navbar1 %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+  {% block left %}{% endblock %}
+  {% block right %}{% endblock %}
+<a href="/">
+  <img class="sigla" src = "/static/images/sigla.jpg" style="float:left;z-index:3;">
+</a>
+  <div style="position:absolute;top:100px;left:20%;min-width:40%;">
+    {% block panel_d %}
+      <div class="well panel line-vertical panel-text reclama" style="{% block style-panel %}{% endblock %}">
+      {% block panel %}{% endblock %}
+      </div>
+    {% endblock %}
+    {% block panel_article %}
+    {% endblock %}
+  </div>
+  {% block body %}{%endblock%}
+</body>
+</html>

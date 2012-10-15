@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block panel %}
+<div style=" text-align:center">
+  <form  method="POST">
+    {% csrf_token %}
+    <p style="font-size:13px"><b>Pentru ati activa contul trebuie sa setezi o parola, dupa te poti inregistra</b></p>
+    <p style="font-size:13px"><b>{{mesaj}}</b></p>
+    {{form.as_p}}
+    <input class="btn " type="submit" value="Seteaza parola "/>
+  </form>
+</div>
+{% endblock %}

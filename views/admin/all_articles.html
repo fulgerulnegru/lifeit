@@ -1,0 +1,15 @@
+{% extends "admin/approved_articles.html" %}
+
+{% block url1 %}
+  {% url all_articles %}
+{% endblock %}
+
+{% block url2 %}
+  {% url all_articles %}
+{% endblock %}
+
+{% block button %}
+  {% if user.is_staff %}
+  <button class="btn btn-info " id="blocked">{% if not i.aprobat %}Aproba{% else %}Blocheaza {% endif %}</button>
+  {% endif %}
+{% endblock %}

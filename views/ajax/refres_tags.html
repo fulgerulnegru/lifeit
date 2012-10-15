@@ -1,0 +1,67 @@
+<html>
+<head>
+<script>
+$('document').ready(function(){
+  $('#next_page').click(function(){
+    $.get("{% url refres_tags %}?page={{ next_page }}",function(data){
+      $(".tags_all").html(data);
+    });
+    return false;
+  });
+  $('#prev_page').click(function(){
+    $.get("{% url refres_tags %}?page={{ prev_page }}",function(data){
+      $(".tags_all").html(data);
+    });
+    return false;
+  });
+  $('#remove').live("click",function(){
+    id = $(this).parent().attr("id");
+    $(".tags_all").prepend('<img src="/static/images/loading.gif" style="position:absolute;top:35px;left:-5px;"></img>');
+    $.get("{% url delete_tags %}?id="+id,function(data){
+      $.get("{% url refres_tags %}?page={{id}}",function(data){
+        $(".tags_all").html(data);
+      });
+    });
+  });
+  $( ".tags" ).draggable({revert: true,
+    start: function(event, ui) {
+        $(this).addClass("label label-info");
+    },
+    stop: function(){
+        $(this).removeClass("label label-info");
+    }
+  });
+});
+</script>
+</head>
+<body>
+  <p><button class="btn btn-danger" id="add_tags">Adauga tags</button></p>
+  <table class="tabel table-striped" id="tabel_tags" >
+  <tbody >
+    {% for i in tags %}
+    <tr class="label-success">
+       <td>
+         <p id="{{i.id}}" class="tags">{{i.name}}</p></td>
+       </td>
+       {% if user.is_staff %}
+       <td id="{{i.id}}">
+          <button class="btn btn-success" id ="remove"><i class="icon-trash"></i></button></br></br>
+       </td>
+       {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+  {% if tags_paginator %}
+      <div class="panou1">
+      <div class="paginator">
+      {% if has_prev %}
+      <a href="{% url refres_tags %}?page={{ prev_page }}" id="prev_page">&laquo; Previous</a>
+      {% endif %}
+      {% if has_next %}
+      <a href="{% url refres_tags %}?page={{ next_page }}" id="next_page">Next &raquo;</a>
+      {% endif %}
+    (Page {{ page }} of {{ pages }})
+    {% endif %}
+</body>
+</html>

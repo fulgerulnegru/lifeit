@@ -1,0 +1,68 @@
+{% extends "admin/admin_staff.html" %}
+{% block javascript %}
+<script src="/static/javascript/lightbox.js"></script>
+<script>
+$('document').ready(function(){
+  $('#remove').live("click",function(){
+    remove = $(this).parent().parent();
+    $.get('{% url delete_user %}?id=' + remove.attr('id'));
+    remove.hide();
+  });
+
+  $('#blocked').live("click",function(){
+    blocked = $(this).parent().prev().prev();
+    $.get('{% url blocked_user %}?id=' + blocked.parent().attr('id'));
+    location.reload();
+  });
+
+  $('#add_user').click(function(){
+        $.get('{% url add_user %}',function(data){
+            $('body').append('<div><div class="well lightbox-box">'+ data +'</div><div class="lightbox" ></div></div>');
+            remove_lightbox();
+        });
+    });
+});
+</script>
+{% endblock %}
+{% block panel %}
+<p><button class="btn btn-danger" id="add_user">Adauga user</button></p>
+<p>
+<table class="table table-striped table-bordered table-condensed">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Username</th>
+      <th>Nume de familie</th>
+      <th>Prenume</th>
+      <th>Email</th>
+      <th>Descriere</th>
+      <th>Activat</th>
+      <th>Blocat</th>
+      <th>Daca este din staf</th>
+      <th>Actiuni</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in user_all %}
+      <tr id="{{i.id}}">
+        <td>{{i.id}}</td>
+        <td>{{i.username}}</td>
+        <td>{{i.first_name}}</td>
+        <td>{{i.last_name}}</td>
+        <td>{{i.email}}</td>
+        <td>{{i.profile.describe}}</td>
+        <td>{{i.profile.active}}</td>
+        <td>{{i.profile.blocked}}</td>
+        <td>{{i.is_staff}}</td> 
+        <td>
+        {% if not  i.is_staff %}
+          <button class="btn btn-success" id ="remove"><i class="icon-trash"></i></button></br></br>
+          <button class="btn btn-info " id="blocked">{% if not i.profile.blocked %}Blocheaza{% else %}Deblocheaza {% endif %}</button>
+        {% endif %}
+        </td>
+      </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</p>
+{% endblock %}

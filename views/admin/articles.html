@@ -1,0 +1,100 @@
+{% extends "admin/admin.html" %}
+
+{% block javascript %}
+<script>
+$('document').ready(function(){
+  {% block javascript3 %}{% endblock %}
+  $('#remove').live("click",function(){
+    remove = $(this).parent().parent();
+    $.get('{% url delete_article %}?id=' + remove.attr('id'));
+    remove.hide();
+  });
+});
+</script>
+{% endblock %}
+
+{% block panel %}
+<p>
+{% if articles_paginator %}
+  (Page {{ page }} of {{ pages }})
+{% endif %}
+{% if articles_paginator %}
+    <ul class="pager">
+      {% if has_prev %}
+        <li class="previous"><a href="{% block url1 %}{% url my_articles %}{% endblock %}?page={{ prev_page}}">&larr;Prev</a></li>
+      {% endif %}
+      {% if has_next %}
+        <li><a href="{% block url2 %}{% url my_articles %}{% endblock %}?page={{ next_page}}">Next &rarr;</a></li>
+      {% endif %}
+    </ul>
+{% endif %}
+</p>
+<p>
+<table class="table table-striped table-bordered table-condensed">
+  <thead>
+    <tr>
+    <th>Id</th>
+    <th>Titlu</th>
+    <th>Descriere</th>
+    <th>Imagine </th>
+    <th>Tags</th>
+    <th>Meniu</th>
+    <th>User</th>
+    <th>Aprobat</th>
+    <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for i in articles %}
+  <tr id="{{i.id}}">
+      <td>{{i.id}}</td>
+      <td>{{i.title}}</td>
+      <td>{{i.describe}}</td>
+      <td><img src="/static/{{i.image}}"</img></td>
+      <td>
+        Taguri sunt :
+        {% for j in i.tag.all %}
+          {{j.name}},
+        {% endfor %}
+      </td>
+      <td>
+        {% if i.menu_set.all %}
+          Menu:
+          {% for j in i.menu_set.all %}
+              {{j.menu}}
+          {% endfor %}
+        {% else %}
+          {% if i.undermenu_set.all %}
+            UnderMenu:
+            {% for j in i.undermenu_set.all %}
+              {{j.undermenu}}
+            {% endfor %}
+            {% else %}
+              <script>
+                $("#{{i.id}}").addClass("info");
+              </script>
+            {% endif %}
+          {% endif %}
+      </td>
+      <td>
+        <a href="#">{{i.user}}</a>
+      </td>
+      <td>
+        {{i.aprobat}}
+      </td>
+      <td>
+        <button class="btn btn-success" id ="remove"><i class="icon-trash"></i></button></br></br>
+        <a href="{% url edit_article %}?id={{i.id}}">
+          <button class="btn btn-success" id ="edit">
+              <i class="icon-cog"></i>
+          </button></br></br>
+        </a>
+        {% block button %}
+        {% endblock %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</p>
+{% endblock %}

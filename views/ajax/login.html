@@ -1,0 +1,49 @@
+{% extends "ajax/forms.html"%}
+
+{% block javascript %}
+{%if user.is_authenticated %}
+  <script>
+    {% if user.profile.active %}
+      {% if user.profile.blocked %}
+        window.location = "{% url blocked %}";
+      {% else %}
+        window.location = "{% url admin %}"; 
+      {% endif %}
+    {% else %}
+      window.location = "{% url active %}";
+    {% endif %}
+  </script>
+{% endif %}
+{% endblock %}
+
+{% block submit %}
+$('document').ready(function(){
+  $('.login').submit(function(){
+    $('.login').append('<img src="/static/images/loading.gif" style="position:absolute;top:660px;left:15px;"></img>');
+    $.post('{% url login %}',$(this).serialize(),function(data){
+      $('.login').html(data);
+      {% block javascript2 %}{% endblock %}
+    }); 
+    return false;
+  });
+});
+{% endblock %}
+
+{% block class %}login{% endblock %}
+
+{% block forms %}
+{% if not user.is_authenticated %}
+
+    {% if error %}
+      <p>
+        <img src = "/static/images/interzis.gif"></img>
+        Numele de utilizator sau parola incorecta. Incearca din nou.
+      </p>
+    {% endif %}
+      <label for="id_username">Username:</label> {{ login_form.username }}<br>
+      <label for="id_password">Password:</label> {{ login_form.password }}<br>
+      <input type="submit" value="login" /> 
+      </br><a href="/recuperare_parola">Recuperare parola</a>
+{% endif %}
+{% endblock%}
+

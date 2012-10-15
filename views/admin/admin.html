@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{%if user.is_authenticated %}
+{% block javascript1 %}
+  <script>
+    {% if user.profile.active %}
+      {% if user.profile.blocked %}
+        window.location = "{% url blocked %}";
+      {% endif %}
+    {% else %}
+      window.location = "{% url active %}";
+    {% endif %}
+  </script>
+  {% block javascript2 %}{% endblock %}
+{% endblock %}
+{% endif %}
+
+{% block navbar1 %}{% endblock %}
+
+{% block  left %}
+<div class="left well">
+  <p><div class="btn-group">
+    
+    <a class="btn btn-primary btn_left " data-toggle="dropdown" href="#">
+      Articole
+      <span class="caret"></span>
+    </a>
+
+    <ul class="dropdown-menu">
+      <a href="{% url my_articles %}">Lista articolelor mele</a>
+      <a href="{% url add_articles %}">Adauga articol</a>
+      {% if user.is_staff %}  
+        <a href="{% url approved_articles%}">Articole de aprobat </a>
+        <a href="{% url all_articles %}">Toate articolele</a>
+      {% endif%}
+    </ul>
+
+  </div></p>
+
+  <p><div class="btn-group">
+    
+    <a class="btn btn-primary btn_left " data-toggle="dropdown" href="#">
+      Fisere
+      <span class="caret"></span>
+    </a>
+
+    <ul class="dropdown-menu">
+      <a href="{% url my_file %}">Lista fisierelor mele</a>
+      <a href="{% url file %}">Toate fisiere</a>
+    </ul>
+
+  </div></p>
+
+
+  {% if user.is_staff %}  
+    <p><a class="btn btn-primary btn_left" href="{% url links %}">Legaturi </a> </br></p>
+    <p><div class="btn-group">
+    
+      <a class="btn btn-primary btn_left " data-toggle="dropdown" href="#">
+        Pagini
+        <span class="caret"></span>
+      </a>
+
+      <ul class="dropdown-menu">
+        <a href="{% url page%}">Toate paginile</a>
+        <a href="{% url add_page %}">Adauga pagini</a>
+      </ul>
+    </div></p>
+    <p><a class="btn btn-primary btn_left" href="{% url menu %}">Meniu </a></p>
+  {% endif %}
+
+</div>
+{% endblock %}

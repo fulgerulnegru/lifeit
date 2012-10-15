@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block navbar1 %}
+  {% include "menu.html" %}
+{% endblock %}
+
+{% block javascript %}
+<script>
+  if("{{page_n}}" == "True")
+  {
+    window.location= "#well";
+  }
+</script>
+<script src="/static/javascript/lightbox.js"></script>
+<script>
+$('document').ready(function(){
+  $('.email').live('submit',function(){
+  $('body').append('<div><div class="well lightbox-box" style="position:fixed;height:300px">'+
+          '<img src="/static/images/loading.gif" style="position:absolute;top:0px;left:80px;"></img>'+
+          '<p class="badee badge-important" style="position:absolute;top:140px;left:178px;">Se trimite email</p>' +
+          '</div><div class="lightbox" ></div></div>');
+    $.post('{% url email%}',$(this).serialize(),function(data){
+      $('.lightbox').parent().remove();
+      $('body').append('<div><div class="well lightbox-box" style="position:fixed;">'+ data +'</div><div class="lightbox" ></div></div>');
+    });
+    return false;
+  });
+    $('.lightbox').live("click",function(){
+      $(this).parent().remove();
+    });
+  $('.login').live('submit',function(){
+    $('.login').append('<img src="/static/images/loading.gif" style="position:absolute;top:600px;left:15px;"></img>');
+    $.post('{% url login%}',$(this).serialize(),function(data){
+      $('.login').html(data);
+    });
+    return false;
+  });
+});
+</script>
+{% endblock %}
+
+{% block panel %}
+  <p  style="margin-left:-10px">
+    <img style="width:300px;height:200px;" src="/static/images/300x200.gif" class="img-polaroid">
+    <img style="width:300px;height:200px;" src="/static/images/300x200.gif" class="img-polaroid">
+  </p>
+{% endblock %}
+
+{% block panel_article %}
+<div id="well" class="well panel line-vertical panel-text" style="{% block style-panel_article %}{% endblock %}">
+  {% block panel_article_c %}
+  <h4 class="latest-title1">Ultimele articole</h4>
+  <img class="arrow" src="/static/images/arrow1.png" alt="arrow">
+  </br>
+  </br>
+  {% for i in articles %}
+  <p style="margin-left:30px">
+    <div class="row article">
+        <div class="span9" style="width:570px;">
+          <a href="{% url views.article%}?id={{i.id}}">
+            <span class="label label-info" style="font-size:30px">
+              {{i.title}}
+            </span>
+          </a>
+          </br>
+          </br>
+          <div class="row">
+            <div class="span3" style="width:90px;"><img src="/static/{{i.image}}"></img></div>
+            <div class="span6" >
+              {{i.describe}}
+              </br>
+              <span style="font-size:20px;">
+                <a href="{% url views.article%}?id={{i.id}}">
+                more<i class="icon-circle-arrow-right" style="position:relative;top:5px;"></i>
+                </a>
+              </span>
+            </div>
+          </div>
+    </div>
+  </div>
+  </p>
+  <hr>
+  </br>
+  {% endfor %}
+{% if articles_paginator %}
+    <ul class="pager">
+      {% if has_prev %}
+        <li class="previous"><a href="{% block url1 %}{% url home %}{% endblock %}?page={{ prev_page}}">&larr;Prev</a></li>
+      {% endif %}
+      {% if has_next %}
+        <li class="next"><a href="{% block url2 %}{% url home %}{% endblock %}?page={{ next_page}}">Next &rarr;</a></li>
+      {% endif %}
+    </ul>
+{% endif %}
+{% endblock %}
+</div>
+{% endblock %}
+
+{% block right %}
+<div class="right line-vertical" style="border-radius: 11px;">
+</br>
+</br>
+  <form class="email well no_border" method="POST" style="margin-left:20px;">
+    {% csrf_token %}
+    <div class="input-prepend">
+      <span class="add-on">@</span>
+      <input class="span2" id="id_email" name="email" type="text" placeholder="Email">
+    </div>
+
+    <input class="btn" type="submit" value="Aboneare">
+  </form>
+  <p class="well no_border" style="margin-left:20px;"> 
+    <a href="https://www.facebook.com/ekart.dragos" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','https://www.facebook.com/ekart.dragos']);" target="_blank" title="Lifeit pe Facebook" rel="nofollow" style="margin-left:30px;">
+      <img src="/static/images/fb.png" border="0" alt="Lifeit pe Facebook"></a>
+     <a href="https://plus.google.com/103087256105562221530/posts" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://plus.google.com/110012999907120176174?rel=author']);" title="Lifeit pe Google+" target="_blank" rel="nofollow">
+      <img src="/static/images/g.png" border="0" alt="Lifeit pe Google+">
+    </a>
+    </p>
+  <p style="margin-left:20px;">
+    <img src="/static/images/140x140.gif" class="img-rounded">
+    <img src="/static/images/140x140.gif" class="img-rounded">
+  </p>
+  <p class="well no_border" style="margin-left:20px;"> 
+  <span class="badge badge-inverse" style="font-size:25px;"> Blogroll</span>
+   </br>
+   </br>
+   {% for i in link %}
+   <span class="label" style="position:relative;font-weight:normal;width:300px;font-size:19px; margin-left:20px;">
+     <a style="color:black;"href="{{i.url}}" rel="{{i.rel}}">{{ i.value }}</a>
+     </br>
+     </br>
+   </span>
+   {% endfor %}
+   </p>
+{%if not user.is_authenticated %}
+    <form class="login well no_border" method="POST" style="width:250px;margin-left:20px;">
+    <div style="display:none"><input type="hidden" name="csrfmiddlewaretoken" value="e22fc3815d2e7f5eecf389359a13ad65"></div>
+    <p style="font-size:13px"><b></b></p>
+    <p style="font-size:13px"><b></b></p>
+      <label for="id_username">Username:</label> <input id="id_username" type="text" name="username" maxlength="128"><br>
+      <label for="id_password">Password:</label> <input id="id_password" type="password" name="password" maxlength="100"><br>
+      <input type="submit" value="login"> 
+      <br><a href="/recuperare_parola">Recuperare parola</a>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

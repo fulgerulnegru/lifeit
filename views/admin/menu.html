@@ -1,0 +1,151 @@
+{% extends "admin/admin_staff.html" %}
+{% block javascript %}
+<script src="/static/javascript/lightbox.js"></script>
+<script>
+$('document').ready(function(){
+
+  $('#add_menu').live("click",function(){
+        $.get('{% url add_menu %}',function(data){
+            $('body').append('<div><div class="well lightbox-box" style="position:fixed">'+ data +'</div><div class="lightbox" ></div></div>');
+            remove_lightbox();
+        });
+    });
+
+    $('#add_under_menu').live("click",function(){
+        menu = $(this).parent().parent().parent();
+
+        $.get('{% url add_under_menu %}?id='+menu.attr("id"),function(data){
+            $('body').append('<div><div class="well lightbox-box" style="position:fixed">'+ data +'</div><div class="lightbox" ></div></div>');
+            remove_lightbox();
+        });
+    });
+
+    $('#remove').live("click",function(){
+        remove = $(this).parent().parent().parent();
+        remove.hide();
+        $.get("{%url delete_menu  'menu' %}?id="+remove.attr('id'));
+    });
+
+    $('#under_remove').live("click",function(){
+        remove = $(this).parent().parent();
+        remove.hide();
+        $.get("{%url delete_menu  'undermenu' %}?id="+remove.attr('id'));
+    });
+
+    $('#edit').live("click",function(){
+        menu = $(this).parent().parent().parent();
+
+        $.get('{% url edit_menu "menu" %}?order='+menu.attr("id"),function(data){
+            $('body').append('<div><div class="well lightbox-box" style="position:fixed">'+ data +'</div><div class="lightbox" ></div></div>');
+            remove_lightbox();
+        });
+    });
+
+    $('#under_edit').live("click",function(){
+        menu = $(this).parent().parent();
+
+        $.get('{% url edit_menu "undermenu" %}?order='+menu.attr("id"),function(data){
+            $('body').append('<div><div class="well lightbox-box" style="position:fixed">'+ data +'</div><div class="lightbox" ></div></div>');
+            remove_lightbox();
+        });
+    });
+
+    $("#up").live("click",function(){
+        move = $(this).parent().parent().parent();
+
+        if(move.prev().html() ){
+            $.get("{% url move_menu 'up'  'menu' %}?order="+move.attr('id'));
+            id = parseInt(move.attr("id")) - 1;
+            id1 = move.prev()
+            
+            move.attr("id",id);
+            id1.insertAfter(move);
+            id1.attr("id",id+1);
+        }
+    });
+    
+    $("#down").live("click",function(){
+        move = $(this).parent().parent().parent();
+
+        if(move.next().html()){
+            $.get("{% url move_menu 'down'  'menu' %}?order="+move.attr('id'));
+            id = parseInt(move.attr("id")) + 1;
+            id1 = move.next();
+            
+            move.attr("id",id);
+            id1.insertBefore(move);
+            id1.attr("id",id-1);
+        }
+    });
+    
+    $("#under_up").live("click",function(){
+        move = $(this).parent().parent();
+
+        if( move.prev().attr("class") == "info" ){
+            $.get("{% url move_menu 'up'  'undermenu' %}?order="+move.attr('id'));
+            id = parseInt(move.attr("id")) - 1;
+            id1 = move.prev()
+            
+            move.attr("id",id);
+            id1.insertAfter(move);
+            id1.attr("id",id+1);
+        }
+    });
+    
+    $("#under_down").live("click",function(){
+        move = $(this).parent().parent();
+
+        if(move.next().html()){
+            $.get("{% url move_menu 'down'  'undermenu' %}?order="+move.attr('id'));
+            id = parseInt(move.attr("id")) + 1;
+            id1 = move.next();
+            
+            move.attr("id",id);
+            id1.insertBefore(move);
+            id1.attr("id",id-1);
+        }
+    });
+});
+</script>
+{% endblock %}
+
+{% block panel %}
+<p><button class="btn btn-danger" id="add_menu">Adauga menu</button></p>
+<table class="table table-condensed">
+  {% for i in menu %}
+  <tbody id="{{i.menu.order}}">
+   <tr>
+      <td>{{i.menu.menu}}</td>
+      <td>{{i.menu.url}}</td>
+      <td>          
+          <button class="btn btn-info " id="add_under_menu">Adauga submeniu</button></br></br>
+          <button class="btn btn-success" id ="remove"><i class="icon-trash"></i></button></br></br>
+          <button class="btn btn-success" id ="edit"><i class="icon-cog"></i></button></br></br>
+      </td>
+      <td>
+          <button class="btn btn-info" id ="up"><i class="icon-arrow-up"></i></button></br></br>
+          <button class="btn btn-info" id ="down"><i class="icon-arrow-down"></i></button></br></br>
+      </td>
+      <td></td>
+    </tr>
+    
+    {% for j in i.undermenu1 %}
+      <tr class="info" id="{{j.order}}">
+        <td style="opacity:0.0;"></td>
+        <td>{{j.undermenu}}</td>
+        <td>{{j.url}}</td>
+        <td>
+          <button class="btn btn-success" id ="under_remove"><i class="icon-trash"></i></button></br></br>
+          <button class="btn btn-success" id ="under_edit"><i class="icon-cog"></i></button></br></br>
+        </td>
+        <td>
+          <button class="btn btn-success" id ="under_up"><i class="icon-arrow-up"></i></button></br></br>
+          <button class="btn btn-success" id ="under_down"><i class="icon-arrow-down"></i></button></br></br>
+        </td>
+      </tr>
+    {% endfor%}
+
+  </tbody>
+  {% endfor %}
+</table>
+{% endblock %}

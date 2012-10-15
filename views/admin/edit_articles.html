@@ -1,0 +1,5 @@
+{% extends "admin/add_articles.html" %}
+
+{% block url %}{% url edit_article %}?id={{id}}{% endblock %}
+
+{% block submit %} Editare articol {% endblock %}

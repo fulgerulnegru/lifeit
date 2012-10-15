@@ -1,0 +1,156 @@
+{% extends "admin/admin.html" %}
+
+{% block javascript %}
+<script src="/static/javascript/jquery-ui-1.8.23.custom.min.js"></script>
+<script>
+$('document').ready(function(){
+  var cifra = $("#id_menu_i").val();
+
+  if(cifra){
+    $('.info').draggable({ disabled:true });
+    $('.menu').draggable({ disabled:true });
+
+    if(cifra[0] == "i"){
+      cifra1 = '#'
+      for(i=1;i<cifra.length;i++)
+        cifra1 += cifra[i];
+
+      there1 = $('.info').parent().filter(cifra1).children(':first-child').hide();
+      $('#id_menu').append('<p class="' + there1.attr("class") +'" style="background-color: #d9edf7;">' + there1.text() + '</p>');
+      $('#id_menu').children().append('<i class="icon-remove"></i>');
+
+    }
+  else{
+    cifra1 = '#'
+    for(i=1;i<cifra.length;i++)
+        cifra1 += cifra[i];
+    there1 = $('.menu').parent().filter(cifra1).children(':first-child');
+    {% block hide %}$(there1).hide(){% endblock %}
+
+    $('#id_menu').append('<p class="' + there1.attr("class") +'" style="background-color: #d9edf7;">' + there1.text() + '</p>');
+    $('#id_menu').children().append('<i class="icon-remove"></i>');
+  }
+  {% block icon %}
+ $(".icon-remove").click(function(){
+          $('.info').draggable({ disabled:false });
+          there1.show();
+          {% block javascritp4 %}{% endblock %}
+          for(i=0; i< $('.menu').length;i++)
+            if($('.menu').eq(i).parent().parent().parent().children().length == 1){
+            $('.menu').eq(i).draggable({disabled:false });
+          }
+
+          this_global = $('#id_menu');
+          $( '#id_menu_i' ).val("");
+          $(this_global).children().remove();
+          $(this_global).droppable({ disabled: false });
+      });
+
+  {% endblock %}
+  }
+
+  $( ".info" ).draggable({revert: true,});
+
+  for(i=0; i< $('.menu').length;i++)
+  if($('.menu').eq(i).parent().parent().parent().children().length == 1){
+      $('.menu').eq(i).draggable({revert:true,});
+  }
+  $('#id_menu').droppable( "option", "accept", ".info" );
+
+  $( "#id_menu" ).droppable({
+       drop: function(event, ui) {
+        there = event.toElement;
+        if(! $(there).hasClass("tags"))
+          {
+          $(there).hide();
+
+          $('.info').draggable({ disabled:true });
+          $('.menu').draggable({ disabled:true });
+          $(this).append('<p class="' + $(there).attr("class") +'" style="background-color: #d9edf7;">' + $(there).text() + '</p>');
+          $(this).droppable({ disabled: true });
+          $(this).children().append('<i class="icon-remove"></i>');
+          this_global = $(this);
+
+          $( '#id_menu_i' ).val( $(there).attr("class")[0] +  $(there).parent().attr('id') );
+
+          $(".icon-remove").click(function(){
+            $('.info').draggable({ disabled:false });
+            $(there).show();
+            for(i=0; i< $('.menu').length;i++)
+              if($('.menu').eq(i).parent().parent().parent().children().length == 1){
+              $('.menu').eq(i).draggable({disabled:false });
+            }
+
+            $( '#id_menu_i' ).val("");
+            $(this_global).children().remove();
+            $(this_global).droppable({ disabled: false });
+          });
+         }
+       }
+  });
+  {% block javascript3 %}{% endblock %}
+  $( ".displacement" ).draggable();
+
+});
+</script>
+{% block javascript5 %}{% endblock %}
+{% endblock %}
+
+{% block style-panel %}min-width:500px;{%endblock %}
+
+{% block panel %}
+<form method="post" action="{% block url %}{% url add_page %}{% endblock %}" {% block enctype %}{% endblock %} >
+   {% csrf_token %}
+   <p style="font-size:19px;text-align:center;"><b>{{mesaj}}</b></p></br>
+   {{form.media }}
+   {{form.as_p}}
+   <p>
+   {{error|safe}}
+     <label for="id_menu">Meniu:</label>
+     <div id="id_menu" style="border-style:dotted;width:100%;height:20px;">
+     </div>
+   </p>
+   {% block tags_form %}{% endblock %}
+   <p style="display:none"> <input id="id_menu_i" type="text" name="menu" maxlength="20" value="{{value}}"></p>
+   <input type="submit" value="{% block submit %}Adauga pagina{% endblock %}"/>
+   {% block tags_input %}{% endblock %}
+  </form>
+{% endblock %}
+
+{% block body %}
+<div class="well panel line-vertical displacement" style="border-bottom-left-radius: 0px ;position:fixed;top:101px;left:73%;min-width:{% block min-width %}10px;{% endblock %}">
+    <div class="line-vertical" style="float:left;">
+  <table class="tabel table-striped" >
+  {% for i in menu %}
+  <tbody >
+  {% block menu %}
+  {% if i.undermenu1 or not i.menu.page  %}
+   <tr>
+     <td id="{{i.menu.order}}"><p class="menu" style="background-color: #f9f9f9">{{i.menu.menu}}</p></td>
+     <td></td>
+    </tr>
+
+    {% for j in i.undermenu1 %}
+      {% if not j.page  %}
+      <tr >
+        <td style="opacity:0.0;"></td>
+        <td id="{{j.order}}"><p class="info" style="background-color: #d9edf7;">{{j.undermenu}}</p></td>
+      </tr>
+      {% else %}
+      <tr style="display: none;" >
+        <td style="opacity:0.0;"></td>
+        <td id="{{j.order}}"><p class="info" style="background-color: #d9edf7;">{{j.undermenu}}</p></td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  {% endblock %}
+  </tbody>
+  {% endfor %}
+  </table>
+</div>
+{% block tags %}
+{% endblock %}
+</div>
+{% endblock %}

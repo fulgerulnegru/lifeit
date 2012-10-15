@@ -1,0 +1,30 @@
+<div class="container"> {% for i in menu %}
+      <ul class="nav" style="left:30%">
+        <li class="divider-vertical"></li>
+        {% if i.undermenu1 %}
+            <li class="dropdown">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                {{i.menu.menu}}
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                {% for j in i.undermenu1 %}
+                  {% if j.url %}
+                    <li><a href="/menu2/undermenu/{{j.url}}">{{j.undermenu}}</a></li>
+                  {% else %}
+                    <li><a href="#">{{j.undermenu}}</a></li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
+        {% else %}
+        {% if i.menu.url %}
+          <li><a href="/menu2/menu/{{i.menu.url}}">{{i.menu.menu}}</a></li> 
+          {% else %}
+          <li><a href="/">{{i.menu.menu}}</a></li>
+          {% endif %}
+        {% endif %}
+        <li class="divider-vertical"></li>
+      </ul>
+  {% endfor %}
+</div>
