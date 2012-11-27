@@ -1,0 +1,57 @@
+{% extends "mobile/base.html" %}
+
+
+{% block meta %}{% endblock %}
+
+{% block javascript%}
+<script>
+  $(document).ready(function(){
+    if($('.describe').width()+150>$(window).width())
+      {
+      $('.describe').width($('.metro').width()-150);
+      }
+    if($(window).width()<240)
+      {
+      $('.metro-sections').width('auto');
+      $('.describe').width($('.metro').width()-40);
+      $('.image-wrapper').css('position','relative');
+      $('.image-wrapper').css('left','15%');
+      $('.describe').addClass('align-center');
+      }
+  });
+</script>
+{% block javascript1%}{% endblock %}
+{% endblock %}
+
+{% block article %}
+  {% for i in articles %}
+<div class="metro ">
+  <div class="metro-sections" style="width: 1430px left: 0px;">
+    <a class="tile wide imagetext bg-color-blue" style="width:auto;" href="{% url m.article%}?id={{i.id}}">
+      <div class="text" style="height:auto;font-size:15px;">{{i.title}}</div>
+      </br>
+     <div class="image-wrapper">
+        <img src="/static/{{i.image}}">
+     </div>
+     <div class="column-text">
+      <div class="text describe" style="height:auto;">{{i.describe}}</div>
+     </div>
+    </a>
+  </div>
+</div>
+  {% endfor %}
+<div class="metro ">
+<div class="pagination pagination-large">
+{% if articles_paginator %}
+    <ul class="pager">
+      {% if has_prev %}
+        <li class="previous"><a href="{% block url1 %}{% url m.home %}{% endblock %}?page={{ prev_page}}">Prev</a></li>
+      {% endif %}
+      {% if has_next %}
+        <li class="next"><a href="{% block url2 %}{% url m.home %}{% endblock %}?page={{ next_page}}">Next </a></li>
+      {% endif %}
+    </ul>
+{% endif %}
+</div>
+</div>
+{% endblock %}

@@ -65,3 +65,4 @@ class Menu (Model):
     articles = ManyToManyField(Article,null=True) 
     url = CharField(max_length=50) 
     order = IntegerField(null=True)
+

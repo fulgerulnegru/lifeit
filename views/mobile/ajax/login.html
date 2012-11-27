@@ -1,0 +1,44 @@
+<html>
+<head>
+{%if user.is_authenticated %}
+  <script>
+    {% if user.profile.active %}
+      {% if user.profile.blocked %}
+        window.location = "{% url blocked %}";
+      {% else %}
+        window.location = "{% url admin %}"; 
+      {% endif %}
+    {% else %}
+      window.location = "{% url active %}";
+    {% endif %}
+  </script>
+{% endif %}
+</head>
+<body>
+ <form class=" login">
+   {% csrf_token %}
+    {% if error %}
+      <p style="color:red;">
+        Numele de utilizator sau parola incorecte. Incearca din nou.
+      </p>
+    {% endif %}
+   <div class="control-group">
+     {{form.username.errors}}
+     <label class="control-label" for="inputUser">User</label>
+     <div class="controls">
+         {{form.username}}
+     </div>
+   </div>
+   <div class="control-group">
+     {{form.password.errors}}
+     <label class="control-label" for="inputPassword">Password</label>
+     <div class="controls">
+         {{form.password}}
+     </div>
+   </div>
+
+   <input class="btn" type="submit" value="Login">
+
+ </form>
+</body>
+</html>

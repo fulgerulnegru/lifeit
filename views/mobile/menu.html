@@ -1,0 +1,28 @@
+<div class="well well-css" style="display:none;padding: 8px 0; ">
+  <ul class="nav nav-list">
+    {% for i in menu %}
+      {% if i.undermenu1 %}
+         <li ><a href="#" class="under">
+             {{i.menu.menu}}&nbsp;&nbsp;&nbsp;&nbsp;
+             <span class="caret" style="padding:5px;"></span>
+           </a>
+            <ul class="under-nav nav nav-list">
+              {% for j in i.undermenu1 %}
+                {% if j.url %}
+                  <li><a href="/menu_mobile/undermenu/{{j.url}}">{{j.undermenu}}</a></li>
+                {% else %}
+                  <li><a href="/m">{{j.undermenu}}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+         </li>
+       {% else %}
+        {% if i.menu.url %}
+          <li><a href="/menu_mobile/menu/{{i.menu.url}}">{{i.menu.menu}}</a></li> 
+        {% else %}
+          <li><a href="/m">{{i.menu.menu}}</a></li>
+        {% endif %}
+       {% endif %}
+    {% endfor %}
+  </ul>
+</div>

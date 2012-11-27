@@ -1,0 +1,20 @@
+<html>
+<head>
+</head>
+<body>
+  <form class="email  no_border" method="POST" style="margin-left:20px;">
+   {% csrf_token %}
+   <p style="font-size:13px"><b>{{mesaj}}</b></p>
+    <div class="control-group">
+         {{form.email.errors}}
+       <label class="control-label" for="inputEmail">Email</label>
+       <div class="controls">
+         {{form.email}}
+       </div>
+     </div>
+
+     <input class="btn" type="submit" value="Abonare">
+
+  </form>
+</body>
+</html>

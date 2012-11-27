@@ -1,10 +1,7 @@
 from django.conf.urls import patterns, include, url
 from controllers.views import *
 import os
-from django.shortcuts import redirect
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+
 
 urlpatterns = patterns('',
 
@@ -13,8 +10,18 @@ urlpatterns = patterns('',
     url(r'email/$',views.email, name='email'),
     url(r'views/article/$' , views.article , name="views.article"),
     url(r'menu2/(?P<menu1>[\w|\W]+)/(?P<url>[\w|\W]+)$',views.menu, name='menu2'),
-    url(r'newslatter/$',views.newslatter, name='newslatter'),
+    url(r'newsletter/$',views.newslatter, name='newslatter'),
     url(r'user/(?P<user>[\w|\W]+)/$',views.user, name='user'),
+    url(r'(?P<abonare>[\w|\W]+)/(?P<email>[\w|\W]+)/(?P<cod>[\w|\w]+)/$',views.email_a, name='user'),
+    url(r'newsletter/(?P<data>[\w|\W]+)$',views.newslatter_a, name='newslatter_a'),
+
+    #well mobile
+    url(r'm/$',mobile.home, name='m.home'),
+    url(r'm_newsletter$',mobile.newsletter, name='m.newsletter'),
+    url(r'm_login$',mobile.login, name='m.login'),
+    url(r'views/m_article/$' , mobile.article , name="m.article"),
+    url(r'views/m_article_ajax/$' , mobile.article_ajax , name="m.article_ajax"),
+    url(r'menu_mobile/(?P<menu1>[\w|\W]+)/(?P<url>[\w|\W]+)$',mobile.menu, name='m.menu2'),
 
     #wall admin
     #wall user

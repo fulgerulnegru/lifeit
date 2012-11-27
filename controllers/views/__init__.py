@@ -6,3 +6,4 @@ import menu
 import page
 import articles
 import file
+import mobile

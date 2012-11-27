@@ -1,6 +1,6 @@
-<div class="container"> {% for i in menu %}
+<div class="container">
+  {% for i in menu %}
       <ul class="nav" style="left:30%">
-        <li class="divider-vertical"></li>
         {% if i.undermenu1 %}
             <li class="dropdown">
               <a href="" class="dropdown-toggle" data-toggle="dropdown">
@@ -24,7 +24,6 @@
           <li><a href="/">{{i.menu.menu}}</a></li>
           {% endif %}
         {% endif %}
-        <li class="divider-vertical"></li>
       </ul>
   {% endfor %}
 </div>

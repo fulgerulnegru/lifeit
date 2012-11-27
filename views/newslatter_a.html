@@ -1,0 +1,74 @@
+{% extends "home.html" %}
+
+{% block panel_d %}
+{% endblock %}
+
+
+{% block panel_article %}
+<div id="well " class="well article_email  panel line-vertical panel-text" style=" min-width:40px{% block style-panel_article %}{% endblock %}">
+  {% block panel_article_c %}
+  <h4 class="latest-title1">Ultimele articole</h4>
+  <img class="arrow" src="/static/images/arrow1.png" alt="arrow">
+  </br>
+  </br>
+  {% if articles_paginator %}
+      <ul class="pager">
+        {% if has_prev %}
+          <li class="previous"><a href="{% block url1 %}{% url home %}{% endblock %}?page={{ prev_page}}">&larr;Prev</a></li>
+        {% endif %}
+        {% if has_next %}
+          <li class="next"><a href="{% block url2 %}{% url home %}{% endblock %}?page={{ next_page}}">Next &rarr;</a></li>
+        {% endif %}
+      </ul>
+  {% endif %}
+  {% endblock %}
+  </div>
+<script>
+$('document').ready(function(){
+  {% for i in articles %}
+    if("{{i.data}}" == "{{data}}")
+    {
+      $(".article_email").append(
+      ' <p style="margin-left:30px">'+
+      '<div class="row article">'+
+         ' <div class="span9" style="width:570px;">'+
+           ' <a href="{% url views.article%}?id={{i.id}}">'+
+             ' <span class="label label-info" style="font-size:30px">'+
+               ' {{i.title}}'+
+             ' </span>'+
+           ' </a>'+
+           ' </br>'+
+           ' </br>'+
+           ' <div class="row">'+
+              '<div class="span3" style="width:90px;"><img src="/static/{{i.image}}"></img></div>'+
+              '<div class="span6" >'+
+                '{{i.describe}}'+
+               ' </br>'+
+                '<span style="font-size:20px;">'+
+                  '<a href="{% url views.article%}?id={{i.id}}">'+
+                  'more<i class="icon-circle-arrow-right" style="position:relative;top:5px;"></i>'+
+                  '</a>'+
+                '</span>'+
+              '</div>'+
+            '</div>'+
+      '</div>'+
+    '</div>'+
+    '</p>'+
+    '<hr>'+
+    '</br>'
+      )
+    }
+  {% endfor %}
+});
+</script>
+{% endblock %}
+{% block body %}
+<div>
+  <div class="well lightbox-box" style="position:fixed;">
+    <p style="font-size:13px"><b>Aceasta este email din data {{data}}</b></p>
+  </div>
+  <div class="lightbox">
+  </div>
+</div>
+{% endblock %}
+

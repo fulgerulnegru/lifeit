@@ -29,7 +29,7 @@ $('document').ready(function(){
       $(this).parent().remove();
     });
   $('.login').live('submit',function(){
-    $('.login').append('<img src="/static/images/loading.gif" style="position:absolute;top:600px;left:15px;"></img>');
+    $('.login').append('<img src="/static/images/loading.gif" style="position:absolute;top:580px;left:15px;"></img>');
     $.post('{% url login%}',$(this).serialize(),function(data){
       $('.login').html(data);
     });
@@ -41,13 +41,17 @@ $('document').ready(function(){
 
 {% block panel %}
   <p  style="margin-left:-10px">
-    <img style="width:300px;height:200px;" src="/static/images/300x200.gif" class="img-polaroid">
-    <img style="width:300px;height:200px;" src="/static/images/300x200.gif" class="img-polaroid">
+    <script type="text/javascript" src="http://profitshare.emag.ro/get_ads.php?zone_id=107784"></script>
+    <script type="text/javascript" src="http://profitshare.emag.ro/get_ads.php?zone_id=107784"></script>
   </p>
 {% endblock %}
 
+{% block style_left %}
+left:10%
+{% endblock %}
+
 {% block panel_article %}
-<div id="well" class="well panel line-vertical panel-text" style="{% block style-panel_article %}{% endblock %}">
+<div id="well" class="well panel line-vertical panel-text" style=" min-width:40px{% block style-panel_article %}{% endblock %}">
   {% block panel_article_c %}
   <h4 class="latest-title1">Ultimele articole</h4>
   <img class="arrow" src="/static/images/arrow1.png" alt="arrow">
@@ -107,7 +111,7 @@ $('document').ready(function(){
       <input class="span2" id="id_email" name="email" type="text" placeholder="Email">
     </div>
 
-    <input class="btn" type="submit" value="Aboneare">
+    <input class="btn" type="submit" value="Abonare">
   </form>
   <p class="well no_border" style="margin-left:20px;"> 
     <a href="https://www.facebook.com/ekart.dragos" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','https://www.facebook.com/ekart.dragos']);" target="_blank" title="Lifeit pe Facebook" rel="nofollow" style="margin-left:30px;">
@@ -117,8 +121,7 @@ $('document').ready(function(){
     </a>
     </p>
   <p style="margin-left:20px;">
-    <img src="/static/images/140x140.gif" class="img-rounded">
-    <img src="/static/images/140x140.gif" class="img-rounded">
+  <script type="text/javascript" src="http://profitshare.emag.ro/get_ads.php?zone_id=107796"></script>
   </p>
   <p class="well no_border" style="margin-left:20px;"> 
   <span class="badge badge-inverse" style="font-size:25px;"> Blogroll</span>
@@ -140,8 +143,10 @@ $('document').ready(function(){
       <label for="id_username">Username:</label> <input id="id_username" type="text" name="username" maxlength="128"><br>
       <label for="id_password">Password:</label> <input id="id_password" type="password" name="password" maxlength="100"><br>
       <input type="submit" value="login"> 
-      <br><a href="/recuperare_parola">Recuperare parola</a>
     </form>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block body %}
 {% endblock %}

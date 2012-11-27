@@ -1,11 +1,32 @@
+<!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-35914268-1']);
+      _gaq.push(['_trackPageview']);
+
+        (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+                        })();
+
+</script>
 <meta name="robots" content="nofollow" />
 <title>{%block title%} Lifeit {%endblock %}</title>
 <link rel="shortcut icon" href="/static/images/sigla.jpg" type="image/x-icon">
 <script type="text/javascript" src="/static/javascript/jquery-1.7.2.js">
 </script>
 <script type="text/javascript" src="/static/javascript/bootstrap.js">
+</script>
+<script>
+  $('document').ready(function(){
+    if($(window).width()<1141){
+      window.location = "/m";
+    }
+  });
 </script>
 {% block javascript %}{% endblock %}
 {% block javascript1 %}{% endblock %}
@@ -32,7 +53,7 @@
 <a href="/">
   <img class="sigla" src = "/static/images/sigla.jpg" style="float:left;z-index:3;">
 </a>
-  <div style="position:absolute;top:100px;left:20%;min-width:40%;">
+<div style="position:absolute;top:100px;{% block style_left %}left:20%{% endblock %};min-width:600px;">
     {% block panel_d %}
       <div class="well panel line-vertical panel-text reclama" style="{% block style-panel %}{% endblock %}">
       {% block panel %}{% endblock %}

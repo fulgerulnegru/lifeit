@@ -19,7 +19,7 @@
 {% block submit %}
 $('document').ready(function(){
   $('.login').submit(function(){
-    $('.login').append('<img src="/static/images/loading.gif" style="position:absolute;top:660px;left:15px;"></img>');
+    $('.login').append('<img src="/static/images/loading.gif" style="position:absolute;top:590px;left:15px;"></img>');
     $.post('{% url login %}',$(this).serialize(),function(data){
       $('.login').html(data);
       {% block javascript2 %}{% endblock %}
@@ -37,13 +37,12 @@ $('document').ready(function(){
     {% if error %}
       <p>
         <img src = "/static/images/interzis.gif"></img>
-        Numele de utilizator sau parola incorecta. Incearca din nou.
+        Numele de utilizator sau parola incorecte. Incearca din nou.
       </p>
     {% endif %}
       <label for="id_username">Username:</label> {{ login_form.username }}<br>
       <label for="id_password">Password:</label> {{ login_form.password }}<br>
       <input type="submit" value="login" /> 
-      </br><a href="/recuperare_parola">Recuperare parola</a>
 {% endif %}
 {% endblock%}
 

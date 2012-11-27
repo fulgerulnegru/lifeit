@@ -5,7 +5,7 @@ import datetime
 TIP_REL_CHOICES = (("","Follow"),("me nofollow","Me nofollow"),("nofollow","Nofollow"))
 
 
-#wall user logi
+#wall user login
 class UserLoginForm(forms.Form):
     username = forms.CharField(max_length=128)
     password = forms.CharField(max_length=100,widget=forms.PasswordInput())
@@ -148,15 +148,6 @@ class EditArticlesModelForm(forms.ModelForm):
     body = forms.CharField(label="Continut",widget=forms.Textarea)
     data = forms.DateField()
 
-    def clean_data(self):
-        if 'data' in self.cleaned_data:
-            data = self.cleaned_data['data']
-
-            if data >= datetime.date.today():
-                return data
-            else:
-                raise forms.ValidationError('Alege o data din viitor')
-
     class Media:
         js = ('/static/javascript/tiny_mce/tiny_mce.js', '/static/javascript/textareas.js')
 
@@ -177,13 +168,3 @@ class FileForm(forms.Form):
 class AddEmailForm(forms.Form):
     email = forms.EmailField()
 
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        print email
-        try:
-            Newslatter.objects.get(email=email)
-            print "ce"
-        except Newslatter.DoesNotExist:
-            return email
-
-        raise forms.ValidationError('Email mai exista in baza')

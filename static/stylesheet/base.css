@@ -15,6 +15,10 @@
 	background-color:#000;
 }
 
+#id_email{
+  box-sizing: content-box;
+}
+
 .sigla{
     position:absolute;
     top:0px;

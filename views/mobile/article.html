@@ -1,0 +1,140 @@
+{% extends "mobile/home.html" %}
+
+{% block javascript1 %}
+   <script src="/static/mobile/scripts/jquery-ui-1.9.2.custom.min.js"></script>
+   <script src="/static/mobile/scripts/jquery.ui.touch-punch.min.js"></script>
+   <script>
+
+      function article_views(data){
+        $('.article-ajax').hide();
+        $('.article-ajax').html(data);
+        $('.article-ajax').delay(5000).fadeIn();
+        $('.progress-article').delay(3000).slideUp()
+      }
+
+      function prev_f(there,prev){
+
+              $(there).parent().hide();
+              $('.progress-article').show()
+              $.get("{% url m.article_ajax %}?id="+prev,function(data){
+                article_views(data);
+              });
+      }
+
+      function next_f(there,next){
+        $(there).parent().hide();
+        $('.progress-article').show()
+        $.get("{% url m.article_ajax %}?id="+next,function(data){
+          article_views(data);
+        });
+      }
+
+
+      function main(prev,next){
+
+        $( "#draggable2" ).draggable({ axis: "x" ,
+          start:function(){
+          },
+          drag:function(){
+            if(parseInt($(this).css('left'))>=70 &&prev){
+              prev_f(this,prev);
+              return false;
+            }
+            if(parseInt($(this).css('left'))<=-70 &&next){
+              next_f(this,next);
+              return false;
+            }
+          },
+          revert: true 
+        });
+
+        $('.previous').click(function(){
+          prev_f($(this).parent().children().eq(0),prev);
+          return false;
+        });
+
+        $('.next').click(function(){
+          next_f($(this).parent().children().eq(0),next);
+          return false;
+        });
+
+      }
+
+      $('document').ready(function(){
+        main('{{prev}}','{{next}}');
+      });
+   </script>
+{% endblock %}
+
+{% block meta %}
+  <meta property="fb:admins" content="https://www.facebook.com/ekart.dragos"/>
+{% endblock %}
+
+{% block article %}
+<div style="overflow: hidden;">
+
+  <div class="well progress-article progress progress-indeterminate" style="background-color: #FFF;display:none;">
+    <div class="bar"></div>
+  </div>
+
+  <div class="article-ajax" >
+
+    <div class="well" id= "draggable2">
+      <h2 style="text-align:center;">
+        <img src="/static/{{article.image}}" ></img>
+          {{ article.title }}
+      </h2>
+      </br>
+      </br>
+      <div style="margin-bottom:30px;">
+        {{article.body|safe}}
+      </div>
+      <p style="position:absolute;right:10px;bottom:10px;">{{article.data}}</p>
+
+      <div style="float:left;" class="like">
+        <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script><fb:like href="http://lifeit.ro/views/article/?id={{article.id}}" send="false" layout="button_count" width="40" show_faces="true" font="arial" fb-xfbml-state="rendered" class="fb_edge_widget_with_comment fb_iframe_widget"><span style="height: 21px; width: 73px;"><iframe id="f549755e" name="f3648bdb6c" scrolling="no" style="border: none; overflow: hidden; height: 21px; width: 73px;" title="Like this content on Facebook." class="fb_ltr" src="http://www.facebook.com/plugins/like.php?channel_url=http%3A%2F%2Fstatic.ak.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D11%23cb%3Dfe014c608%26origin%3Dhttp%253A%252F%252Fanimekage.com%252Ff8f0ee424%26domain%3Danimekage.com%26relation%3Dparent.parent&amp;colorscheme=light&amp;extended_social_context=false&amp;font=arial&amp;href=http%3A%2F%2Fwww.animekage.com%2Fwatch-online%2Fnaruto-shippuden-episode-283.html&amp;layout=button_count&amp;locale=en_US&amp;node_type=link&amp;sdk=joey&amp;send=false&amp;show_faces=false&amp;width=90"></iframe></span></fb:like>
+      </div>
+      <br class="like">
+
+    </div>
+
+    <div class="metro " style="text-align:center">
+      <div class="pagination pagination-large" style="margin:0px;">
+          <ul class="pager">
+            {% if prev %}
+              <li class="previous"><a href="{% url m.article %}?id={{ prev }}">Prev</a></li>
+            {% endif %}
+            {% if next %}
+              <li class="next"><a href="{% url m.article %}?id={{ next }}">Next </a></li>
+            {% endif %}
+          </ul>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<br>
+<div class="well">
+
+  <div class="row-fluid">
+
+    <span class="span4">
+      <img src="/static/{{article.user.profile.image}}" style=""></img>
+    </span>
+    <span class="span5">
+      <p class="pauthor" style="margin-top:10px;">{{article.user.first_name}}</p>
+      <p class="pauthor">{{article.user.last_name}}</p>
+      <p class="pauthor">{{article.user.email}}</p>
+      <p class="pauthor" >{{article.user.profile.describe}}</p>
+    </span>
+  </div>
+
+</div>
+
+</br>
+
+  <!-- de facut paginator ca si la gmail -->
+
+{% endblock %}

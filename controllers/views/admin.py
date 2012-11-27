@@ -36,7 +36,7 @@ def upload_profile(request):
         profile.save()
         os.remove(delete + '/' + str(text) )
         os.system("mogrify -resize 200x200 "+ "'" + "static/" + str(profile.image) + "'")
-    return HttpResponse('ok')
+        return HttpResponse('ok')
 
 
 def edit_user(request):

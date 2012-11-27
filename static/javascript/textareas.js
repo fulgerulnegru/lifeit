@@ -31,7 +31,7 @@ tinyMCE.init({
 		{title : 'Table row 1', selector : 'tr', classes : 'tablerow'}
 	],
  
-	width: '200',
-	height: '400'
+	width: '700',
+	height: '700'
  
 })
