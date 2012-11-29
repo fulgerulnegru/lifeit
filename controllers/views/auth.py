@@ -6,17 +6,17 @@ def login (request):
     error = ""
     message = ""
     if request.method=="POST":
-            form = UserLoginForm(request.POST)
-            username=request.POST["username"]
-            password=request.POST["password"]
-            user=authenticate(username = username,password = password)
+        form = UserLoginForm(request.POST)
+        
+        if form.is_valid():
+            user = form.cleaned_data['user']
             if user is not None:
                 auth_login(request, user)
                 message = "yes"
             else:
                 error = "yes"
     else:
-            form=UserLoginForm()
+        form=UserLoginForm()
     return render_to_response("ajax/login.html",RequestContext(request,{"login_form":form,'error':error,'message':message}))
 
 

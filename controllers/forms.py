@@ -1,15 +1,38 @@
 from django import forms
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+
 from controllers.models import *
+
 import datetime
 
 TIP_REL_CHOICES = (("","Follow"),("me nofollow","Me nofollow"),("nofollow","Nofollow"))
 
 
 #wall user login
-class UserLoginForm(forms.Form):
-    username = forms.CharField(max_length=128)
-    password = forms.CharField(max_length=100,widget=forms.PasswordInput())
+class UserLoginForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'password')
 
+    def __init__(self, *args, **kwargs):
+        super(UserLoginForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        super(UserLoginForm, self).clean()
+        email = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user is None:
+            self._errors['username'] = self.error_class(["Your username and/or password were incorrect."])
+        elif not user.is_active:
+            self._errors['username'] = self.error_class(["Account is not active"])
+
+        self.cleaned_data['user'] = user
+
+        return self.cleaned_data
 
 class ProfileModelForm(forms.ModelForm):
     describe = forms.CharField(label="Descriere",widget=forms.Textarea)
