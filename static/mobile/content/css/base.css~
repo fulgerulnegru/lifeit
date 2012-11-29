@@ -52,8 +52,12 @@ body{
 }
 
 
-@media (min-width: 1280px){
+@media (min-width: 1290px){
   .like{
     display:none;
   }
+}
+
+p{
+   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }

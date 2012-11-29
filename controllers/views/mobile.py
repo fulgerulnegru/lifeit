@@ -75,37 +75,19 @@ def menu(request,menu1,url):
 
 #well for article
 def article_optimization(id):
-    try:
-        prev = ""
-        next = ""
-        article = Article.objects.get(id=id)
-        n = len(Article.objects.all())
-        i = article.id + 1
-        while i <= n :
-            try:
-                j = Article.objects.get(id=i)
-                if j.data <= datetime.date.today() and j.aprobat:
-                  prev = i
-                  break
-            except:
-                pass
-            i += 1
+    prev = ""
+    next = ""
+    articles = Article.objects.filter(aprobat=True).order_by('-data')
+    n =  len(articles)
+    i = list(articles.values_list('id',flat=True)).index(int(id))
 
-        i = article.id - 1
-        while i > 0 :
-            try:
-                j = Article.objects.get(id=i)
-                if j.data <= datetime.date.today() and j.aprobat:
-                  next = i
-                  break
-            except:
-                pass
-            i -= 1
+    if i > 0 :
+        prev = articles.values_list('id',flat=True)[i - 1]
 
-        return Context({'prev':prev,'next':next})
+    if i < n-1:
+        next = articles.values_list('id',flat=True)[i + 1]
 
-    except:
-        pass
+    return Context({'prev':prev,'next':next})
 
 
 def article(request):
