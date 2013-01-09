@@ -1,7 +1,7 @@
 from libraries import *
 
 ITEMS_PER_TAGS = 8
-ITEMS_PER_ARTICLES = 20
+ITEMS_PER_ARTICLES = 10
 
 
 @login_required
@@ -16,7 +16,7 @@ def my_articles(request):
         page = paginator.page(page_number)
     except InvalidPage:
         page = paginator.page(1)
-    return render_to_response("admin/articles.html",RequestContext(request,{"articles":page,'articles_paginator':paginator.num_pages > 1,'has_prev': page.has_previous(),'has_next': page.has_next(),
+    return render_to_response("admin/articles.html",RequestContext(request,{"FACEBOOK_APP_ID": FACEBOOK_APP_ID,"articles":page,'articles_paginator':paginator.num_pages > 1,'has_prev': page.has_previous(),'has_next': page.has_next(),
         'page': page_number,'pages': paginator.num_pages,'next_page': page_number + 1,'prev_page': page_number - 1,"id":page_number}))
 
 
@@ -39,19 +39,18 @@ def approved_articles(request):
 
 @login_required
 def all_articles(request):
-    if request.user.is_staff:
-        articles = Article.objects.order_by("-data")
-        paginator = Paginator(articles,ITEMS_PER_ARTICLES)
-        try:
-            page_number = int(request.GET['page'])
-        except (KeyError, ValueError):
-            page_number = 1
-        try:
-            page = paginator.page(page_number)
-        except InvalidPage:
-            page = paginator.page(1)
-        return render_to_response("admin/all_articles.html",RequestContext(request,{"articles":page,'articles_paginator':paginator.num_pages > 1,'has_prev': page.has_previous(),'has_next': page.has_next(),
-            'page': page_number,'pages': paginator.num_pages,'next_page': page_number + 1,'prev_page': page_number - 1,"id":page_number}))
+    articles = Article.objects.order_by("-data")
+    paginator = Paginator(articles,ITEMS_PER_ARTICLES)
+    try:
+        page_number = int(request.GET['page'])
+    except (KeyError, ValueError):
+        page_number = 1
+    try:
+        page = paginator.page(page_number)
+    except InvalidPage:
+        page = paginator.page(1)
+    return render_to_response("admin/all_articles.html",RequestContext(request,{"FACEBOOK_APP_ID": FACEBOOK_APP_ID,"articles":page,'articles_paginator':paginator.num_pages > 1,'has_prev': page.has_previous(),'has_next': page.has_next(),
+        'page': page_number,'pages': paginator.num_pages,'next_page': page_number + 1,'prev_page': page_number - 1,"id":page_number}))
 
 
 @login_required

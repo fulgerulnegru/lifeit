@@ -4,6 +4,11 @@
   {% include "menu.html" %}
 {% endblock %}
 
+
+{% block keywords%}
+  <meta name="keywords" content="ekart, dragos, ioan , blog personal, blog de it, lifeit, android, programare , django ,jquery">
+{% endblock %}
+
 {% block javascript %}
 <script>
   if("{{page_n}}" == "True")
@@ -116,8 +121,9 @@ left:10%
   <p class="well no_border" style="margin-left:20px;"> 
     <a href="https://www.facebook.com/ekart.dragos" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','https://www.facebook.com/ekart.dragos']);" target="_blank" title="Lifeit pe Facebook" rel="nofollow" style="margin-left:30px;">
       <img src="/static/images/fb.png" border="0" alt="Lifeit pe Facebook"></a>
-     <a href="https://plus.google.com/103087256105562221530/posts" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://plus.google.com/110012999907120176174?rel=author']);" title="Lifeit pe Google+" target="_blank" rel="nofollow">
-      <img src="/static/images/g.png" border="0" alt="Lifeit pe Google+">
+    &nbsp;&nbsp;
+     <a href="/feed" target="_blank" >
+      <img src="/static/images/RSS.png" alt="RSS lifeit">
     </a>
     </p>
   <p style="margin-left:20px;">

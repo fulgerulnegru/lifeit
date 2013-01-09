@@ -56,53 +56,58 @@ def add_under_menu(request):
 
 
 @login_required
-def delete_menu(request,option):
+def delete_menu(request):
     if request.user.is_staff:
         if 'id' in request.GET:
             id = request.GET['id']
-            if option == "menu":
-                menu = Menu.objects.get(order=id)
-                menu.undermenu.all().delete()
-                menu.delete()
-            elif option == "undermenu":
-                undermenu = UnderMenu.objects.get(order=id)
-                undermenu.delete()
-            return HttpResponse("ok")
-
-
-@login_required
-def move_menu(request,direction , option):
-    if request.user.is_staff:
-        if 'order' in request.GET:
-            order = request.GET['order']
-            if option == "menu":
-                menu = Menu.objects.get(order=order)
-                if direction == "up":
-                    order = int(order) - 1
-                    menu1 = Menu.objects.get(order=order)
-                elif direction == "down":
-                    order = int(order) + 1
-                    menu1 = Menu.objects.get(order=order)
-            elif option == "undermenu":
-               menu = UnderMenu.objects.get(order=order)
-               if direction == "up":
-                    order = int(order) - 1
-                    menu1 = UnderMenu.objects.get(order=order)
-               if direction == "down":
-                    order = int(order) + 1
-                    menu1 = UnderMenu.objects.get(order=order)
-
-            menu1.order , menu.order = menu.order , menu1.order
-            menu.save()
-            menu1.save()
+        if 'option' in request.GET:
+            option = request.GET['option']
+        if option == "menu":
+            menu = Menu.objects.get(order=id)
+            menu.undermenu.all().delete()
+            menu.delete()
+        elif option == "undermenu":
+            undermenu = UnderMenu.objects.get(order=id)
+            undermenu.delete()
         return HttpResponse("ok")
 
 
 @login_required
-def edit_menu(request,option):
+def move_menu(request):
     if request.user.is_staff:
         if 'order' in request.GET:
             order = request.GET['order']
+        if 'option' in request.GET:
+            option = request.GET['option']
+        if 'direction' in request.GET:
+            direction = request.GET['direction']
+
+        if option == "menu":
+            menu = Menu.objects.get(order=order)
+            if direction == "up":
+                menu1 = Menu.objects.filter(order__lt=order).latest('order')
+            elif direction == "down":
+                menu1 = Menu.objects.filter(order__gt=order)[0]
+        elif option == "undermenu":
+           menu = UnderMenu.objects.get(order=order)
+           if direction == "up":
+                menu1 = UnderMenu.objects.filter(order__lt=order).latest('order')
+           if direction == "down":
+                menu1 = UnderMenu.objects.filter(order__gt=order)[0]
+
+        menu1.order , menu.order = menu.order , menu1.order
+        menu.save()
+        menu1.save()
+        return HttpResponse(dumps({'id':menu.order,'id1':menu1.order}), 'application/json')
+
+
+@login_required
+def edit_menu(request):
+    if request.user.is_staff:
+        if 'order' in request.GET:
+            order = request.GET['order']
+        if 'option' in request.GET:
+            option = request.GET['option']
         if option == "menu":
             menu = Menu.objects.get(order=order)
             if request.method == "POST":
@@ -125,4 +130,4 @@ def edit_menu(request,option):
                     return render_to_response("ajax/edit_menu.html",RequestContext(request,{'form':form,'mesaj':mesaj,'value':"Edit menu",'url':'/admin/edit_menu/'+option+'/?order='+str(menu.order)}))
             else:
                 form = AddUnderMenuModelForm(instance=menu)
-            return render_to_response("ajax/edit_menu.html",RequestContext(request,{'form':form,'value':"Edit menu",'url':'/admin/edit_menu/'+option+'/?order='+str(menu.order)}))
+                return render_to_response("ajax/edit_menu.html",RequestContext(request,{'form':form,'value':"Edit menu",'url':'/admin/edit_menu/'+option+'/?order='+str(menu.order)}))

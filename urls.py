@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from controllers.views import *
+from controllers.templatetags import *
 import os
 
 
@@ -7,6 +7,7 @@ urlpatterns = patterns('',
 
     #well views
     url(r'^$',views.home, name='home'),
+    url(r'robots.txt',views.robot , name="robot"),
     url(r'email/$',views.email, name='email'),
     url(r'views/article/$' , views.article , name="views.article"),
     url(r'menu2/(?P<menu1>[\w|\W]+)/(?P<url>[\w|\W]+)$',views.menu, name='menu2'),
@@ -14,6 +15,7 @@ urlpatterns = patterns('',
     url(r'user/(?P<user>[\w|\W]+)/$',views.user, name='user'),
     url(r'(?P<abonare>[\w|\W]+)/(?P<email>[\w|\W]+)/(?P<cod>[\w|\w]+)/$',views.email_a, name='user'),
     url(r'newsletter/(?P<data>[\w|\W]+)$',views.newslatter_a, name='newslatter_a'),
+    url(r'feed',views.feed,name="feed"),
 
     #well mobile
     url(r'm/$',mobile.home, name='m.home'),
@@ -43,9 +45,9 @@ urlpatterns = patterns('',
     url(r'admin/menu$', menu.menu , name="menu"),
     url(r'admin/add_menu$' , menu.add_menu , name="add_menu"),
     url(r'admin/add_under_menu/$' , menu.add_under_menu , name="add_under_menu"),
-    url(r'admin/delete_menu/([\w|\W]+)/$', menu.delete_menu , name="delete_menu"),
-    url(r'admin/moveu_menu/([\w|\W]+)/([\w|\W]+)/$', menu.move_menu , name="move_menu"),
-    url(r'admin/edit_menu/([\w|\W]+)/', menu.edit_menu , name="edit_menu"),
+    url(r'admin/delete_menu/$', menu.delete_menu , name="delete_menu"),
+    url(r'admin/move_menu/$', menu.move_menu , name="move_menu"),
+    url(r'admin/edit_menu/', menu.edit_menu , name="edit_menu"),
 
     #wall page
     url(r'admin/page$', page.page , name="page"),
@@ -66,6 +68,12 @@ urlpatterns = patterns('',
     url(r'admin/all_file/$' , file.file , name="file"),
     url(r'admin/my_file/$' , file.my_file , name="my_file"),
     url(r'admin/delete_file$' , file.delete_file , name="delete_file"),
+
+    #wall facebook login
+    url(r'admin/facebook_login/$', facebook.login , name = "facebook.login"),
+    url(r'admin/facebook_login_success/$', facebook.login_success, name="facebook.succes"),
+    url(r'admin/share_facebook/', facebook.add_share , name = "facebook.add_share"),
+
 
     #wall tags
     url(r'admin/add_tags$' , articles.add_tags , name="add_tags"),

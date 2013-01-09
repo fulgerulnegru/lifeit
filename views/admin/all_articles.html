@@ -1,4 +1,4 @@
-{% extends "admin/approved_articles.html" %}
+{% extends "admin/articles.html" %}
 
 {% block url1 %}
   {% url all_articles %}
@@ -8,8 +8,16 @@
   {% url all_articles %}
 {% endblock %}
 
-{% block button %}
+
+{% block button_not_staff %}
   {% if user.is_staff %}
-  <button class="btn btn-info " id="blocked">{% if not i.aprobat %}Aproba{% else %}Blocheaza {% endif %}</button>
+    <button class="btn btn-success" id ="remove"><i class="icon-trash"></i></button></br></br>
+    <a href="{% url edit_article %}?id={{i.id}}">
+      <button class="btn btn-success" id ="edit">
+          <i class="icon-cog"></i>
+      </button></br></br>
+    </a>
+    <button class="btn btn-info " id="blocked">{% if not i.aprobat %}Aproba{% else %}Blocheaza {% endif %}</button></br></br>
   {% endif %}
+
 {% endblock %}

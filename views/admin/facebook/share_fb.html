@@ -1,0 +1,76 @@
+<div id="fb-root"></div>
+<script>
+  var share_bt;
+  $('document').ready(function(){
+    $(".share_fb").click(function(){
+      share_bt  = this;
+    });
+  });
+
+  function test(FB,id,image){
+    FB.getLoginStatus(function(response) {
+      if (response.status != 'connected') {
+        window.location = "{% url facebook.login %}";
+      }
+    });
+
+    data = '<form class="describe">'
+      + '<p><label for="id_value">Descriere:</label> <input id="id_descriere" type="text" name="descriere" value="" maxlength="1000"></p>'
+      + '<input class="btn" type="submit" value=" Descriere  ">'
+      + '</form>'
+    $('body').append('<div><div class="well lightbox-box">'+ data +'</div><div class="lightbox" ></div></div>');
+
+    $('.lightbox').click(function(){
+      $(this).parent().remove();
+      return false;
+    });
+
+    $('.describe').submit(function(){
+      $('.alert').remove();
+      body = $('#id_descriere').val();
+      if(body){
+        if(confirm("Chiar vrei sa faci share pe facebook  ?")){
+          var imgURL="http://lifeit.ro/static/"+ image;
+          FB.api('/me/feed', 'post', {
+              message:body,
+              picture:imgURL,
+              link:"lifeit.ro/{% url views.article %}/?id="+id,
+          }, function(response) {
+            if (!response || response.error) {
+              console.log(response.error);
+            } else {
+              $.getJSON('{% url facebook.add_share %}',{'id_article':id,'id_share':response.id});
+              $(share_bt).remove();
+              $('.lightbox-box').html('<div class="alert" style="background:green;color:white;">Sa share-uit cu succes</div>');
+            }
+          });
+        }
+      }
+      else{
+        $('.lightbox-box').prepend('<div class="alert alert-error">This field is required.</div>');
+      }
+      return false;
+    });
+  }
+
+
+  window.fbAsyncInit = function() {
+
+    FB.init({
+        appId      : '{{FACEBOOK_APP_ID}}',
+        channelUrl : 'http://localhost:8000/media/channel.html',
+        status     : true,
+        cookie     : true,
+        xfbml      : true,
+        oauth      : true,
+    });
+  };
+
+  (function(d){
+     var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "http://connect.facebook.net/en_US/all.js";
+     d.getElementsByTagName('head')[0].appendChild(js);
+  }(document));
+
+</script>

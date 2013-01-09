@@ -4,9 +4,11 @@
 <script>
 $('document').ready(function(){
   $('#remove').live("click",function(){
-    remove = $(this).parent().parent();
-    $.get('{% url delete_page %}?id=' + remove.attr('id'));
-    remove.hide();
+    if(confirm("Chiar vrei sa stergi pagina  ?")){
+      remove = $(this).parent().parent();
+      $.get('{% url delete_page %}?id=' + remove.attr('id'));
+      remove.hide();
+    }
   });
 });
 </script>

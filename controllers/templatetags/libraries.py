@@ -14,9 +14,16 @@ from django.template.loader import render_to_string
 import os
 import random
 import datetime
+from pyfb import Pyfb
+from django.utils.simplejson import dumps
+from django.utils import feedgenerator
+
+
 #din site
 from controllers.models import *
 from controllers.forms import *
+from settings import FACEBOOK_APP_ID, FACEBOOK_SECRET_KEY, FACEBOOK_REDIRECT_URL
+
 
 delete = os.path.join(os.path.dirname(__file__),'../../static')
 delete = str(delete)

@@ -1,16 +1,23 @@
-{% extends "admin/admin.html" %}
+{% extends "admin/admin.html"%}
+{% load template %}
 
 {% block javascript %}
 <script>
 $('document').ready(function(){
   {% block javascript3 %}{% endblock %}
   $('#remove').live("click",function(){
-    remove = $(this).parent().parent();
-    $.get('{% url delete_article %}?id=' + remove.attr('id'));
-    remove.hide();
+    if(confirm("Chiar vrei sa stergi articolul  ?")){
+      remove = $(this).parent().parent();
+      $.get('{% url delete_article %}?id=' + remove.attr('id'));
+      remove.hide();
+    }
   });
 });
 </script>
+{% block javascript4 %}
+{% include "admin/facebook/share_fb.html" %}
+{% endblock %}
+
 {% endblock %}
 
 {% block panel %}
@@ -83,12 +90,17 @@ $('document').ready(function(){
         {{i.aprobat}}
       </td>
       <td>
-        <button class="btn btn-success" id ="remove"><i class="icon-trash"></i></button></br></br>
-        <a href="{% url edit_article %}?id={{i.id}}">
-          <button class="btn btn-success" id ="edit">
-              <i class="icon-cog"></i>
-          </button></br></br>
-        </a>
+        {% block button_not_staff %}
+          <button class="btn btn-success" id ="remove"><i class="icon-trash"></i></button></br></br>
+          <a href="{% url edit_article %}?id={{i.id}}">
+            <button class="btn btn-success" id ="edit">
+                <i class="icon-cog"></i>
+            </button></br></br>
+          </a>
+        {% endblock %}
+        {% block share %}
+          {% share_fb  i user   %}
+        {% endblock %}
         {% block button %}
         {% endblock %}
       </td>

@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<meta http-equiv="content-language" content="ro">
+<meta property="og:type" content="blog">
+<meta property="fb:admins" content="100000520627179"/>
+{% block keywords%}
+{% endblock %}
+{% block meta %}
+{% endblock %}
+
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -14,7 +23,7 @@
                         })();
 
 </script>
-<meta name="robots" content="nofollow" />
+
 <title>{%block title%} Lifeit {%endblock %}</title>
 <link rel="shortcut icon" href="/static/images/sigla.jpg" type="image/x-icon">
 <script type="text/javascript" src="/static/javascript/jquery-1.7.2.js">
@@ -24,7 +33,7 @@
 <script>
   $('document').ready(function(){
     if($(window).width()<1141){
-      window.location = "/m";
+      window.location = {% block location %}"/m"{% endblock %};
     }
   });
 </script>

@@ -19,7 +19,7 @@ def some_job():
     if articles:
         for j in newslatter:
             if j.active:
-                message = EmailMultiAlternatives( "Neswletter","", settings.DEFAULT_FROM_EMAIL, [j.email]) 
+                message = EmailMultiAlternatives( "Newsletter","", settings.DEFAULT_FROM_EMAIL, [j.email]) 
                 message1 =  render_to_string("newslatter.html",{'articles':articles,'ip':"http://lifeit.ro",'data':datetime.date.today(),'j':j})
                 message.attach_alternative(message1,"text/html") 
                 message.send() 

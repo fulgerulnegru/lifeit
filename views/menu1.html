@@ -1,8 +1,10 @@
 {% extends "article.html" %}
 
 {% block title %}
-  {{ menu2.page.title }} | Lifeit
+  Lifeit
 {% endblock %}
+
+{% block location%}"/menu_mobile/{{menu1}}/{{url}}"{% endblock %}
 
 {% block panel_article_c %}
 {% if menu2.page %}

@@ -39,6 +39,11 @@ class Tag (Model):
     name = CharField(max_length=64, unique=True)
 
 
+class Share_fb (Model):
+    user =  ForeignKey(User)
+    id_share = CharField(max_length=100,unique=True)
+
+
 class Article (Model):
     title = CharField(max_length=200)
     describe = CharField(max_length=500)
@@ -48,13 +53,14 @@ class Article (Model):
     image = ImageField(upload_to="article")
     tag = ManyToManyField(Tag,null=True)
     user = ForeignKey(User)
+    share_fb = ManyToManyField(Share_fb,null=True)
 
 
 class UnderMenu (Model):
     undermenu = CharField(max_length=50)
     page = OneToOneField(Page,null=True,on_delete=SET_NULL)
-    articles = ManyToManyField(Article,null=True) 
-    url = CharField(max_length=50) 
+    articles = ManyToManyField(Article,null=True)
+    url = CharField(max_length=50)
     order = IntegerField(null=True)
 
 
@@ -62,7 +68,6 @@ class Menu (Model):
     menu = CharField(max_length=50)
     undermenu = ManyToManyField(UnderMenu)
     page = OneToOneField(Page,null=True,on_delete=SET_NULL)
-    articles = ManyToManyField(Article,null=True) 
-    url = CharField(max_length=50) 
+    articles = ManyToManyField(Article,null=True)
+    url = CharField(max_length=50)
     order = IntegerField(null=True)
-

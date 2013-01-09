@@ -2,6 +2,17 @@ from libraries import *
 
 ITEMS_PER_ARTICLES = 20
 
+
+def feed(request):
+    articles = Article.objects.filter(aprobat = True).order_by('-data')[:10]
+    f = feedgenerator.Atom1Feed( title=u"Lifeit",link=u"http://lifeit.ro",description=u"Este un blog dedicat programari si tot ce tine de informatica.",
+            language=u"ro",author_name=u"Lifeit",feed_url=u"http://http://lifeit.ro/feed")
+
+    for i in articles:
+        f.add_item(title=i.title,link=u"http://lifeit.ro//views/article/?id="+str(i.id),pubdate=i.data,description=i.body)
+    return HttpResponse(f.writeString('UTF-8'),content_type="application/xhtml+xml")
+
+
 def home (request):
     menu = []
     article = []
@@ -141,3 +152,7 @@ def newslatter_a(request,data):
     link = Links.objects.all()
 
     return render_to_response("newslatter_a.html",RequestContext(request,{'menu':menu,'articles':article,'link':link,'data':data}))
+
+
+def robot(request):
+    return HttpResponse("");

@@ -3,7 +3,21 @@
 {% block title %}
 {{ article.title }} | Lifeit
 {% endblock %}
+
 {% block panel_d %}
+{% endblock %}
+
+{% block location %}
+"{% url m.article %}?id={{article.id}}"
+{% endblock %}
+
+{% block keywords%}
+<meta name="keywords" content="{% for i in article.tag.all%}{{i.name}}, {% endfor %}">
+{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{article.describe}}">
+<meta name="author" content="{{article.user.first_name}} {{article.user.last_name}}">
 {% endblock %}
 
 {% block panel_article_c %}

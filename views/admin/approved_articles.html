@@ -16,8 +16,12 @@
   });
 {% endblock %}
 
+{% block javascript4 %}
+{% endblock %}
+
 {% block button %}
-  {% if user.is_staff %}
   <button class="btn btn-info " id="blocked">{% if not i.aprobat %}Aproba{% else %}Blocheaza {% endif %}</button>
-  {% endif %}
+{% endblock %}
+
+{% block share %}
 {% endblock %}

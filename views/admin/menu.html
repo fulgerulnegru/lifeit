@@ -14,7 +14,7 @@ $('document').ready(function(){
     $('#add_under_menu').live("click",function(){
         menu = $(this).parent().parent().parent();
 
-        $.get('{% url add_under_menu %}?id='+menu.attr("id"),function(data){
+        $.get('{% url add_under_menu %}',{'id':menu.attr("id")},function(data){
             $('body').append('<div><div class="well lightbox-box" style="position:fixed">'+ data +'</div><div class="lightbox" ></div></div>');
             remove_lightbox();
         });
@@ -23,19 +23,19 @@ $('document').ready(function(){
     $('#remove').live("click",function(){
         remove = $(this).parent().parent().parent();
         remove.hide();
-        $.get("{%url delete_menu  'menu' %}?id="+remove.attr('id'));
+        $.get("{%url delete_menu %}",{"id":remove.attr('id'),'option':'menu'});
     });
 
     $('#under_remove').live("click",function(){
         remove = $(this).parent().parent();
         remove.hide();
-        $.get("{%url delete_menu  'undermenu' %}?id="+remove.attr('id'));
+        $.get("{%url delete_menu %}",{"id":remove.attr('id'),'option':'undermenu'});
     });
 
     $('#edit').live("click",function(){
         menu = $(this).parent().parent().parent();
 
-        $.get('{% url edit_menu "menu" %}?order='+menu.attr("id"),function(data){
+        $.get('{% url edit_menu %}',{'order':menu.attr("id"),'option':'menu'},function(data){
             $('body').append('<div><div class="well lightbox-box" style="position:fixed">'+ data +'</div><div class="lightbox" ></div></div>');
             remove_lightbox();
         });
@@ -44,7 +44,7 @@ $('document').ready(function(){
     $('#under_edit').live("click",function(){
         menu = $(this).parent().parent();
 
-        $.get('{% url edit_menu "undermenu" %}?order='+menu.attr("id"),function(data){
+        $.get('{% url edit_menu %}',{'order':menu.attr("id"),'option':'undermenu'},function(data){
             $('body').append('<div><div class="well lightbox-box" style="position:fixed">'+ data +'</div><div class="lightbox" ></div></div>');
             remove_lightbox();
         });
@@ -54,13 +54,17 @@ $('document').ready(function(){
         move = $(this).parent().parent().parent();
 
         if(move.prev().html() ){
-            $.get("{% url move_menu 'up'  'menu' %}?order="+move.attr('id'));
-            id = parseInt(move.attr("id")) - 1;
-            id1 = move.prev()
-            
+          $('body').prepend('<img class="load" src="/static/images/loading.gif" style="position:fixed;top:40%;left:30%;z-index:3;"></img>');
+          $.getJSON("{% url move_menu  %}",{"order":move.attr('id'),'option':'menu','direction':'up'},function(data){
+            id = data.id;
+            id1 = data.id1
+            mo = move.prev()
             move.attr("id",id);
-            id1.insertAfter(move);
-            id1.attr("id",id+1);
+            mo.insertAfter(move);
+            mo.attr("id",id1);
+            $('.load').remove();
+          });
+            
         }
     });
     
@@ -68,13 +72,16 @@ $('document').ready(function(){
         move = $(this).parent().parent().parent();
 
         if(move.next().html()){
-            $.get("{% url move_menu 'down'  'menu' %}?order="+move.attr('id'));
-            id = parseInt(move.attr("id")) + 1;
-            id1 = move.next();
-            
+          $('body').prepend('<img class="load" src="/static/images/loading.gif" style="position:fixed;top:40%;left:30%;z-index:3;"></img>');
+          $.getJSON("{% url move_menu  %}",{"order":move.attr('id'),'option':'menu','direction':'down'},function(data){
+            id = data.id;
+            id1 = data.id1;
+            mo = move.next();
             move.attr("id",id);
-            id1.insertBefore(move);
-            id1.attr("id",id-1);
+            mo.insertBefore(move);
+            mo.attr("id",id1);
+            $('.load').remove();
+          });
         }
     });
     
@@ -82,13 +89,16 @@ $('document').ready(function(){
         move = $(this).parent().parent();
 
         if( move.prev().attr("class") == "info" ){
-            $.get("{% url move_menu 'up'  'undermenu' %}?order="+move.attr('id'));
-            id = parseInt(move.attr("id")) - 1;
-            id1 = move.prev()
-            
+          $('body').prepend('<img class="load" src="/static/images/loading.gif" style="position:fixed;top:40%;left:30%;z-index:3;"></img>');
+          $.getJSON("{% url move_menu  %}",{"order":move.attr('id'),'option':'undermenu','direction':'up'},function(data){
+            id = data.id;
+            id1 = data.id1
+            mo = move.prev()
             move.attr("id",id);
-            id1.insertAfter(move);
-            id1.attr("id",id+1);
+            mo.insertAfter(move);
+            mo.attr("id",id1);
+            $('.load').remove();
+          });
         }
     });
     
@@ -96,13 +106,16 @@ $('document').ready(function(){
         move = $(this).parent().parent();
 
         if(move.next().html()){
-            $.get("{% url move_menu 'down'  'undermenu' %}?order="+move.attr('id'));
-            id = parseInt(move.attr("id")) + 1;
-            id1 = move.next();
-            
+          $('body').prepend('<img class="load" src="/static/images/loading.gif" style="position:fixed;top:40%;left:30%;z-index:3;"></img>');
+          $.getJSON("{% url move_menu  %}",{"order":move.attr('id'),'option':'undermenu','direction':'down'},function(data){
+            id = data.id;
+            id1 = data.id1;
+            mo = move.next();
             move.attr("id",id);
-            id1.insertBefore(move);
-            id1.attr("id",id-1);
+            mo.insertBefore(move);
+            mo.attr("id",id1);
+            $('.load').remove();
+          });
         }
     });
 });

@@ -14,6 +14,8 @@
 {% endblock %}
 {% endif %}
 
+{% block location %}""{% endblock %}
+
 {% block navbar1 %}{% endblock %}
 
 {% block  left %}
@@ -30,8 +32,8 @@
       <a href="{% url add_articles %}">Adauga articol</a>
       {% if user.is_staff %}  
         <a href="{% url approved_articles%}">Articole de aprobat </a>
-        <a href="{% url all_articles %}">Toate articolele</a>
       {% endif%}
+        <a href="{% url all_articles %}">Toate articolele</a>
     </ul>
 
   </div></p>
